@@ -53,11 +53,32 @@ Type: `bitwarden-password-manager`. Implemented by shelling out to the
   in the user's context, so Harpo applies only logical scope. For strong
   scoping, use a Secrets Manager provider (planned).
 
+## Provider: Keeper Commander
+
+Type: `keeper-commander`. Implemented by shelling out to the `keeper`
+(Keeper Commander) CLI.
+
+- Probes `keeper whoami` to report login state (`unlocked` when logged in,
+  `unauthenticated` otherwise). Keeper Commander has no lock/unlock concept;
+  it relies on the user's login, ideally a persistent-login config.
+- Resolves the **password** field via `keeper find-password <ref>` (accepts a
+  record UID or path/title, returns just the password). Other fields are read
+  from `keeper get <ref> --format json --unmask` and extracted by field type or
+  custom label.
+- A Keeper record UID is a 22-character base64url string (e.g.
+  `rvwIBG_ban2VTH64OsnzLn`) — different from the Bitwarden UUID shape.
+- Never lists the vault on behalf of an agent and never writes values to stdout.
+- `supportsScopedAccess` is `false`: like a personal vault, a logged-in session
+  has broad access in the user's context, so Harpo applies only logical scope.
+  For fine-grained, scoped machine access, a future **Keeper Secrets Manager**
+  adapter is the path.
+
 ## Planned providers
 
 The interface is designed to grow. Planned adapters include:
 
 - Bitwarden Secrets Manager (machine identities, finer scope)
+- Keeper Secrets Manager (scoped machine identity)
 - 1Password
 - HashiCorp Vault
 - AWS Secrets Manager, GCP Secret Manager, Azure Key Vault

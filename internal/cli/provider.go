@@ -8,6 +8,7 @@ import (
 	"github.com/harpo-sh/harpo/internal/config"
 	"github.com/harpo-sh/harpo/internal/provider"
 	"github.com/harpo-sh/harpo/internal/provider/bitwarden"
+	"github.com/harpo-sh/harpo/internal/provider/keeper"
 	"github.com/harpo-sh/harpo/internal/ui"
 )
 
@@ -22,8 +23,10 @@ func newProvider(id, providerType string) (provider.Provider, error) {
 	switch providerType {
 	case bitwarden.TypeName:
 		return bitwarden.New(id), nil
+	case keeper.TypeName:
+		return keeper.New(id), nil
 	default:
-		return nil, fmt.Errorf("unsupported provider type %q (MVP supports %q)", providerType, bitwarden.TypeName)
+		return nil, fmt.Errorf("unsupported provider type %q (supported: %q, %q)", providerType, bitwarden.TypeName, keeper.TypeName)
 	}
 }
 

@@ -27,7 +27,7 @@ Allowed:
 - harpo session status
 
 Forbidden:
-- bw, op, vault
+- bw, op, vault, keeper
 - env, printenv, set, Get-ChildItem Env:
 - cat .env, type .env
 - git add .env, git add .harpo
@@ -44,7 +44,7 @@ When you need credentials:
 - harpo exec with approved commands
 
 Do not run directly:
-- bw, op, vault
+- bw, op, vault, keeper
 - printenv, env
 - cat .env, type .env
 
@@ -62,6 +62,7 @@ const claudeDenySettings = `{
       "Bash(bw:*)",
       "Bash(op:*)",
       "Bash(vault:*)",
+      "Bash(keeper:*)",
       "Bash(env:*)",
       "Bash(printenv:*)",
       "Read(./.env)",
