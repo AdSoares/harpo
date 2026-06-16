@@ -12,30 +12,30 @@ import (
 type VaultState string
 
 const (
-	StateUnknown    VaultState = "unknown"
-	StateUnlocked   VaultState = "unlocked"
-	StateLocked     VaultState = "locked"
-	StateUnauthed   VaultState = "unauthenticated"
-	StateNotFound   VaultState = "cli-not-found"
+	StateUnknown  VaultState = "unknown"
+	StateUnlocked VaultState = "unlocked"
+	StateLocked   VaultState = "locked"
+	StateUnauthed VaultState = "unauthenticated"
+	StateNotFound VaultState = "cli-not-found"
 )
 
 // Status is the result of probing a provider.
 type Status struct {
-	Type              string
-	CLIFound          bool
-	Vault             VaultState
+	Type               string
+	CLIFound           bool
+	Vault              VaultState
 	SafeForInheritance bool // whether the provider session is safe to inherit (always false for bw)
-	Detail            string
+	Detail             string
 }
 
 // Capabilities advertises what a provider can and cannot enforce, so Harpo can
 // warn when "security" is only logical local scoping. See MVP spec §17.
 type Capabilities struct {
-	CanList               bool
-	CanReadByRef          bool
-	SupportsScopedAccess  bool
-	SupportsAudit         bool
-	SupportsRotation      bool
+	CanList                bool
+	CanReadByRef           bool
+	SupportsScopedAccess   bool
+	SupportsAudit          bool
+	SupportsRotation       bool
 	SupportsDynamicSecrets bool
 }
 

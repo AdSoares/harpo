@@ -8,10 +8,10 @@ import (
 
 func TestParseTTL(t *testing.T) {
 	cases := map[string]time.Duration{
-		"2h":     2 * time.Hour,
-		"30m":    30 * time.Minute,
-		"1h30m":  90 * time.Minute,
-		"45s":    45 * time.Second,
+		"2h":    2 * time.Hour,
+		"30m":   30 * time.Minute,
+		"1h30m": 90 * time.Minute,
+		"45s":   45 * time.Second,
 	}
 	for in, want := range cases {
 		d, err := ParseTTL(in)

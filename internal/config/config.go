@@ -91,9 +91,9 @@ func Default(projectName string, mode Mode, agent string) *Config {
 		mode = ModeStrict
 	}
 	return &Config{
-		Version: SchemaVersion,
-		Project: Project{Name: projectName, AllowedPaths: []string{"."}},
-		Mode:    mode,
+		Version:   SchemaVersion,
+		Project:   Project{Name: projectName, AllowedPaths: []string{"."}},
+		Mode:      mode,
 		Providers: map[string]Provider{},
 		Secrets:   map[string]Secret{},
 		Profiles:  map[string]Profile{},

@@ -22,10 +22,10 @@ var DangerousEnvVars = []string{
 	"BW_CLIENTID",
 	"BW_CLIENTSECRET",
 	"BW_PASSWORD",
-	"OP_SESSION",         // 1Password (prefix match handled below)
+	"OP_SESSION", // 1Password (prefix match handled below)
 	"OP_SERVICE_ACCOUNT_TOKEN",
-	"VAULT_TOKEN",        // HashiCorp Vault
-	"KEEPER_PASSWORD",    // Keeper Commander master password, if provided via env
+	"VAULT_TOKEN",     // HashiCorp Vault
+	"KEEPER_PASSWORD", // Keeper Commander master password, if provided via env
 }
 
 // isDangerous reports whether an environment variable name (the part before '=')

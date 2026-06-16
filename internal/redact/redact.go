@@ -17,11 +17,11 @@ const Mask = "[redacted]"
 // tokenPatterns matches common credential shapes by format. These complement
 // exact-value redaction for cases where the value is not known in advance.
 var tokenPatterns = []*regexp.Regexp{
-	regexp.MustCompile(`gh[pousr]_[A-Za-z0-9]{16,}`),       // GitHub tokens
-	regexp.MustCompile(`glpat-[A-Za-z0-9_\-]{16,}`),        // GitLab PAT
-	regexp.MustCompile(`AKIA[0-9A-Z]{16}`),                 // AWS access key id
-	regexp.MustCompile(`sk-[A-Za-z0-9]{20,}`),              // OpenAI-style keys
-	regexp.MustCompile(`xox[baprs]-[A-Za-z0-9\-]{10,}`),    // Slack tokens
+	regexp.MustCompile(`gh[pousr]_[A-Za-z0-9]{16,}`),    // GitHub tokens
+	regexp.MustCompile(`glpat-[A-Za-z0-9_\-]{16,}`),     // GitLab PAT
+	regexp.MustCompile(`AKIA[0-9A-Z]{16}`),              // AWS access key id
+	regexp.MustCompile(`sk-[A-Za-z0-9]{20,}`),           // OpenAI-style keys
+	regexp.MustCompile(`xox[baprs]-[A-Za-z0-9\-]{10,}`), // Slack tokens
 }
 
 // Redactor masks a known set of literal secret values plus generic token
