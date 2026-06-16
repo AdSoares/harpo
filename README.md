@@ -114,6 +114,12 @@ harpo agent setup claude|codex  Generate agent-safety config
 See [`SECURITY.md`](SECURITY.md) for the threat model and what Harpo does *not*
 protect against.
 
+## Contributing
+
+Contributions are welcome — see [`CONTRIBUTING.md`](CONTRIBUTING.md). Harpo is a
+security tool, so please read the security invariants there before changing
+anything that touches secrets.
+
 ## License
 
 [Apache-2.0](LICENSE).
