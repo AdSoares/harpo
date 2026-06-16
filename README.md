@@ -1,5 +1,7 @@
 # Harpo
 
+[![CI](https://github.com/AdSoares/harpo/actions/workflows/ci.yml/badge.svg)](https://github.com/AdSoares/harpo/actions/workflows/ci.yml)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/AdSoares/harpo)](go.mod)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
 **A local secret broker for AI coding agents.**
