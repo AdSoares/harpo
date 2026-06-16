@@ -1,5 +1,7 @@
 # Harpo
 
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+
 **A local secret broker for AI coding agents.**
 
 Harpo lets developers grant Claude Code, Codex and other coding agents
