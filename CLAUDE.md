@@ -83,9 +83,10 @@ When adding any feature, ask: does the agent gain a path to the raw vault, a lon
 - `harpo init` must also seed `.gitignore` with `.harpo/`, `.env`, `.env.*`, `!.env.example`.
 - `harpo agent setup claude|codex` generates `CLAUDE.md` / `AGENTS.md` plus (for Claude) `.claude/settings.local.json` deny rules blocking `bw`, `op`, `vault`, `env`, `printenv`, `cat .env`, `harpo reveal`, etc. Note the agent-safety principle: control must **not** rely on instructions in `CLAUDE.md`/`AGENTS.md` alone, because agents can be prompt-injected.
 
-## Conventions (inherited from Company OS)
+## Conventions
 
-Per `F:\02-company-os\CLAUDE.md`:
-- **Docs in Portuguese (BR); code, identifiers, and commits in English** (Conventional Commits).
+- **All commits and all repository documents are written in English** (ADRs, READMEs, design docs, code comments). This is a public open-source product, so docs are part of the product surface. This **overrides** the Company OS default (`F:\02-company-os\CLAUDE.md`), which sets documentation to Portuguese (BR) — that default does not apply here.
+- Commits follow **Conventional Commits**.
 - This project lives under `marca-pessoal/` (founder's personal projects). It is positioned as a public open-source product (target license **Apache-2.0**).
 - Project tagline: *A local secret broker for AI coding agents.*
+- Note: the original `harpo-mvp-spec.md` and `harpo-market-ready-spec.md` were authored in PT-BR; translate only when asked.

@@ -1,48 +1,48 @@
-# ADR-0001 — Linguagem do MVP: Go
+# ADR-0001 — MVP language: Go
 
-**Status:** Aceito
-**Data:** 2026-06-16
-**Decisor:** Ad Soares
-**Contexto do produto:** Harpo — broker local de secrets para agentes de programação com IA (ver `harpo-mvp-spec.md`)
+**Status:** Accepted
+**Date:** 2026-06-16
+**Decider:** Ad Soares
+**Product context:** Harpo — a local secret broker for AI coding agents (see `harpo-mvp-spec.md`)
 
 ---
 
-## Contexto
+## Context
 
-O MVP spec (§14.2) recomendava .NET 10/8 e listava Go e Rust como alternativas fortes, sem travar a escolha. Como a linguagem é uma decisão de difícil reversão (porta quase-de-mão-única) e o Runner — núcleo do produto — depende fortemente de spawnar processo filho com ambiente controlado, a escolha precisava ser fechada antes de qualquer scaffolding.
+The MVP spec (§14.2) recommended .NET 10/8 and listed Go and Rust as strong alternatives, without locking the choice. Because the language is a hard-to-reverse decision (a near one-way door) and the Runner — the core of the product — relies heavily on spawning a child process with a controlled environment, the choice had to be settled before any scaffolding.
 
-A discussão central foi **Go vs Rust**, dado que o Harpo atua no domínio de segurança.
+The central discussion was **Go vs Rust**, given that Harpo operates in the security domain.
 
-## Decisão
+## Decision
 
-**O MVP do Harpo será escrito em Go.**
+**The Harpo MVP will be written in Go.**
 
-## Alternativas consideradas
+## Alternatives considered
 
 ### Rust
-- **A favor:** memória sem GC permite zeroização determinística de secrets (`zeroize`, `secrecy`), tipos que impedem `Debug`/log acidental do valor, e forte percepção de mercado como ferramenta de segurança.
-- **Contra:** curva de aprendizado real (não faz parte do stack atual do fundador), maior verbosidade na parte de `exec`/env, SDKs de cloud menos maduros para providers futuros, entrega mais lenta.
+- **For:** GC-free memory enables deterministic zeroization of secrets (`zeroize`, `secrecy`), types that prevent accidental `Debug`/log exposure of values, and strong market perception as a security tool.
+- **Against:** real learning curve (not part of the founder's current stack), more verbose `exec`/env handling, less mature cloud SDKs for future providers, slower delivery.
 
-### Go (escolhida)
-- **A favor:** `os/exec` + manipulação de env idiomáticos — exatamente o coração do Runner (resolver secrets, filtrar ambiente, remover `BW_SESSION`, injetar só o autorizado); cross-compile e single binary triviais; SDKs de cloud maduros para os providers da fase 3; já faz parte do stack do fundador; entrega rápida do MVP.
-- **Contra:** GC torna a zeroização de secret em memória frágil; percepção de "ferramenta de segurança" um pouco abaixo de Rust.
+### Go (chosen)
+- **For:** idiomatic `os/exec` + environment handling — exactly the heart of the Runner (resolve secrets, filter the environment, strip `BW_SESSION`, inject only what is authorized); trivial cross-compilation and single binary; mature cloud SDKs for the phase-3 providers; already part of the founder's stack; fast MVP delivery.
+- **Against:** GC makes in-memory secret zeroization fragile; "security tool" perception slightly below Rust.
 
-### .NET (recomendação original do spec)
-- Boa produtividade para o fundador, mas distribuição single-binary e percepção de mercado para CLI de segurança ficam atrás de Go/Rust. Preterida.
+### .NET (the spec's original recommendation)
+- Good productivity for the founder, but single-binary distribution and market perception for a security CLI lag behind Go/Rust. Rejected.
 
-## Justificativa
+## Rationale
 
-1. **O valor do MVP está na corretude do broker e na DX**, não em hardening criptográfico de memória: policy engine, session grants, strip de `BW_SESSION`, audit sem valor, redaction best-effort. Go entrega isso bem e rápido.
-2. **A superfície de vazamento dominante é a env var entregue ao processo filho** (MVP spec §7.2), que é plaintext dentro do filho independentemente da linguagem. A principal vantagem de Rust (zeroização in-process) protege um elo que não é o mais fraco neste momento.
-3. **Idiomático no ponto mais central:** spawnar processo com ambiente filtrado é exatamente o forte de Go.
-4. **Redução de fricção de entrega:** stack já conhecido pelo fundador; um produto entregue e útil vale mais que a stack ideal (MVP spec §24).
+1. **The MVP's value is in broker correctness and DX**, not in cryptographic memory hardening: policy engine, session grants, stripping `BW_SESSION`, audit-without-value, best-effort redaction. Go delivers this well and fast.
+2. **The dominant leak surface is the env var handed to the child process** (MVP spec §7.2), which is plaintext inside the child regardless of language. Rust's main advantage (in-process zeroization) protects a link that is not the weakest one at this stage.
+3. **Idiomatic at the most central point:** spawning a process with a filtered environment is exactly Go's strength.
+4. **Reduced delivery friction:** stack already known to the founder; a shipped, useful product matters more than the ideal stack (MVP spec §24).
 
-## Consequências
+## Consequences
 
-- Scaffolding do MVP em Go (CLI framework e libs definidos no início da implementação; ver `CLAUDE.md`).
-- Mesmo com GC, secrets devem ser tratados como `[]byte` de vida curta, nunca colocados em tipos com `String()`/`Error()` logáveis, e descartados assim que possível.
-- Distribuição via single binary + cross-compile (Windows/Linux/macOS).
+- MVP scaffolding in Go (CLI framework and libraries defined at the start of implementation; see `CLAUDE.md`).
+- Even with a GC, secrets must be treated as short-lived `[]byte`, never placed in types with a loggable `String()`/`Error()`, and discarded as soon as possible.
+- Distribution via single binary + cross-compilation (Windows/Linux/macOS).
 
-## Reavaliação futura
+## Future reevaluation
 
-Rust **não está descartado**. Se o posicionamento de segurança se tornar o eixo competitivo do produto (página "Security model", auditoria pública, público enterprise), uma reescrita do core em Rust passa a ser justificável — com `secrecy`/`zeroize` virando parte da narrativa de produto. Gatilho: tração real + segurança como diferenciador exigido pelo mercado. Não antes de existir usuário.
+Rust is **not rejected**. If security positioning becomes the product's competitive axis ("Security model" page, public auditing, enterprise audience), rewriting the core in Rust becomes justifiable — with `secrecy`/`zeroize` becoming part of the product narrative. Trigger: real traction + security as a market-required differentiator. Not before there is a user.
