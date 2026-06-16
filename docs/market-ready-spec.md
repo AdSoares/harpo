@@ -1,158 +1,152 @@
-# Harpo — Especificação da Versão Pronta para Mercado
+# Harpo — Market-Ready Specification
 
 **Status:** Draft v0.1  
-**Data:** 2026-06-16  
-**Tipo:** Produto open source com potencial comercial para segurança de secrets em fluxos de desenvolvimento com agentes de IA  
-**Nome:** Harpo  
-**Tagline principal:** _A local secret broker for AI coding agents._  
-**Categoria proposta:** Agentic Secrets Security / AI Agent Secret Broker
+**Date:** 2026-06-16  
+**Type:** Open source product with commercial potential for secrets security in development workflows with AI agents  
+**Name:** Harpo  
+**Main tagline:** _A local secret broker for AI coding agents._  
+**Proposed category:** Agentic Secrets Security / AI Agent Secret Broker
 
 ---
 
-## 1. Visão de produto
+## 1. Product vision
 
-O **Harpo** é uma ferramenta open source que cria uma camada segura, local e auditável entre **agentes de programação com IA** e **secrets armazenados em cofres existentes**.
+**Harpo** is an open source tool that creates a secure, local, and auditable layer between **AI coding agents** and **secrets stored in existing vaults**.
 
-O produto nasce para resolver uma dor emergente do mercado: desenvolvedores estão usando agentes como Claude Code, Codex, Cursor, Windsurf, Gemini CLI e outros para executar tarefas reais, mas ainda precisam fornecer credenciais, tokens e chaves de acesso de maneira improvisada.
+The product is born to solve an emerging market pain: developers are using agents like Claude Code, Codex, Cursor, Windsurf, Gemini CLI, and others to perform real tasks, but they still have to provide credentials, tokens, and access keys in an improvised way.
 
-O Harpo deve se posicionar como:
+Harpo should position itself as:
 
-> **O broker local de secrets para desenvolvimento agentic.**
+> **The local secret broker for agentic development.**
 
-Ou, em inglês:
+Or, in English:
 
 > **Harpo is the local secret broker that lets AI coding agents use credentials without seeing your vault, your raw secrets, or your long-lived environment.**
 
 ---
 
-## 2. Tese de mercado
+## 2. Market thesis
 
-A adoção de agentes de IA no desenvolvimento de software cria uma nova superfície de risco:
+The adoption of AI agents in software development creates a new risk surface:
 
-- agentes executam comandos;
-- agentes leem arquivos;
-- agentes editam código;
-- agentes chamam CLIs;
-- agentes acessam APIs;
-- agentes podem ser influenciados por prompt injection em README, issues, logs, dependências e arquivos do repositório.
+- agents run commands;
+- agents read files;
+- agents edit code;
+- agents call CLIs;
+- agents access APIs;
+- agents can be influenced by prompt injection in README files, issues, logs, dependencies, and repository files.
 
-Ao mesmo tempo, o fluxo produtivo exige acesso a secrets:
+At the same time, the productive workflow requires access to secrets:
 
-- repositórios privados;
+- private repositories;
 - registries;
-- provedores cloud;
-- bancos de desenvolvimento;
-- APIs internas;
-- ferramentas de observabilidade;
-- plataformas de CI/CD.
+- cloud providers;
+- development databases;
+- internal APIs;
+- observability tools;
+- CI/CD platforms.
 
-O mercado já possui cofres de secrets, mas o problema específico é outro:
+The market already has secrets vaults, but the specific problem is different:
 
 ```text
-Como permitir que um agente de programação use credenciais temporárias e limitadas sem dar a ele acesso direto ao cofre e sem obrigar o desenvolvedor a colar tokens no prompt?
+How can a coding agent use temporary, limited credentials without giving it direct access to the vault and without forcing the developer to paste tokens into the prompt?
 ```
 
-O Harpo ocupa esse espaço.
+Harpo occupies that space.
 
 ---
 
-## 3. Posicionamento
+## 3. Positioning
 
-### 3.1 Categoria
+### 3.1 Category
 
 ```text
 Agentic Secrets Security
 ```
 
-ou
+or
 
 ```text
 AI Agent Secret Broker
 ```
 
-### 3.2 Frase curta
+### 3.2 Short sentence
 
 ```text
 Harpo gives AI coding agents scoped, temporary access to secrets from your existing vaults.
 ```
 
-### 3.3 Frase longa
+### 3.3 Long sentence
 
 ```text
 Harpo is an open source local secret broker for AI coding agents. It lets developers and teams grant temporary, scoped, auditable access to credentials from existing vaults without pasting tokens into prompts, committing .env files, or giving agents direct access to the vault.
 ```
 
-### 3.4 Frase em português
-
-```text
-Harpo é um broker local de secrets para agentes de programação com IA. Ele permite autorizar acesso temporário, limitado e auditável a credenciais de cofres existentes sem colar tokens no prompt, sem commitar .env e sem dar ao agente acesso direto ao vault.
-```
-
 ---
 
-## 4. Por que open source?
+## 4. Why open source?
 
-Harpo deve ser open source porque:
+Harpo should be open source because:
 
-- segurança exige confiança e auditabilidade;
-- desenvolvedores querem entender como secrets são tratados;
-- integração com agentes e CLIs exige comunidade;
-- providers de cofre mudam com frequência;
-- adoção bottom-up em times de engenharia é mais provável com CLI livre;
-- empresas podem adotar o core antes de contratar recursos avançados.
+- security requires trust and auditability;
+- developers want to understand how secrets are handled;
+- integration with agents and CLIs requires community;
+- vault providers change frequently;
+- bottom-up adoption in engineering teams is more likely with a free CLI;
+- companies can adopt the core before purchasing advanced features.
 
-### 4.1 Modelo recomendado
+### 4.1 Recommended model
 
 ```text
 Open source core + commercial extensions opcionais
 ```
 
-Core open source:
+Open source core:
 
-- CLI local;
-- providers principais;
+- local CLI;
+- main providers;
 - session grants;
-- policy local;
-- audit local;
+- local policy;
+- local audit;
 - agent setup;
-- plugin SDK básico.
+- basic plugin SDK.
 
-Possíveis ofertas comerciais futuras:
+Possible future commercial offerings:
 
-- console web para times;
-- policy management centralizado;
-- audit log centralizado;
+- web console for teams;
+- centralized policy management;
+- centralized audit log;
 - SIEM integration;
 - enterprise SSO;
-- aprovação remota;
-- gestão de rotação;
+- remote approval;
+- rotation management;
 - compliance reports;
-- marketplace de policies;
-- suporte empresarial.
+- policy marketplace;
+- enterprise support.
 
 ---
 
-## 5. Diferenciação
+## 5. Differentiation
 
-Harpo não deve competir diretamente com Bitwarden, 1Password, HashiCorp Vault, AWS Secrets Manager ou Azure Key Vault.
+Harpo should not compete directly with Bitwarden, 1Password, HashiCorp Vault, AWS Secrets Manager, or Azure Key Vault.
 
-Harpo deve se posicionar como camada complementar.
+Harpo should position itself as a complementary layer.
 
-### 5.1 Não é um password manager
+### 5.1 It is not a password manager
 
-O Harpo não guarda sua vida digital.
+Harpo does not store your digital life.
 
-### 5.2 Não é um secrets manager cloud
+### 5.2 It is not a cloud secrets manager
 
-O Harpo não tenta substituir infra corporativa de secrets.
+Harpo does not try to replace corporate secrets infrastructure.
 
-### 5.3 Não é apenas um `.env` manager
+### 5.3 It is not just a `.env` manager
 
-O Harpo evita `.env` como padrão e usa `.env` apenas como modo de compatibilidade.
+Harpo avoids `.env` as the default and uses `.env` only as a compatibility mode.
 
-### 5.4 Não é apenas um wrapper do Bitwarden CLI
+### 5.4 It is not just a Bitwarden CLI wrapper
 
-O Harpo adiciona:
+Harpo adds:
 
 - session grants;
 - TTL;
@@ -161,30 +155,30 @@ O Harpo adiciona:
 - agent setup;
 - audit;
 - redaction;
-- execução controlada de processo filho;
+- controlled child process execution;
 - provider abstraction;
-- padrões específicos para agentes de IA.
+- patterns specific to AI agents.
 
 ---
 
-## 6. Princípio estratégico
+## 6. Strategic principle
 
-O Harpo deve executar o agente sempre que possível.
+Harpo should run the agent whenever possible.
 
-Fluxo preferido:
+Preferred flow:
 
 ```bash
 harpo run --profile graces-dev -- claude
 ```
 
-Fluxo menos seguro, mas suportável:
+Less secure but supportable flow:
 
 ```bash
 claude
 # agente chama harpo depois
 ```
 
-A diferença é importante:
+The difference is important:
 
 ```text
 Quando Harpo executa o agente, Harpo controla o ambiente desde o início.
@@ -193,7 +187,7 @@ Quando o agente chama Harpo depois, parte do controle já foi perdida.
 
 ---
 
-## 7. Arquitetura target
+## 7. Target architecture
 
 ```text
 ┌────────────────────────────────────┐
@@ -246,11 +240,11 @@ Optional future:
 
 ---
 
-## 8. Funcionalidades target
+## 8. Target features
 
 ## 8.1 Core CLI
 
-Comandos principais:
+Main commands:
 
 ```bash
 harpo init
@@ -279,26 +273,26 @@ harpo scan
 
 ## 8.2 Provider SDK
 
-Harpo deve suportar providers por plugin.
+Harpo should support providers via plugin.
 
-### Providers prioritários
+### Priority providers
 
-| Provider | Prioridade | Observação |
+| Provider | Priority | Note |
 |---|---:|---|
-| Bitwarden Password Manager | Alta | ótimo para dev solo |
-| Bitwarden Secrets Manager | Alta | melhor para uso profissional e machine accounts |
-| 1Password | Alta | forte adoção por devs e times |
-| HashiCorp Vault | Alta | padrão em empresas e infra |
-| AWS Secrets Manager | Média | relevante para cloud AWS |
-| GCP Secret Manager | Média | relevante para cloud GCP |
-| Azure Key Vault | Média | relevante para empresas Microsoft |
-| Doppler | Média | popular como secrets manager developer-first |
-| Infisical | Média | open source e developer-first |
-| Local encrypted provider | Baixa/Média | útil para demo, testes e dev offline |
+| Bitwarden Password Manager | High | great for solo dev |
+| Bitwarden Secrets Manager | High | best for professional use and machine accounts |
+| 1Password | High | strong adoption by devs and teams |
+| HashiCorp Vault | High | standard in companies and infra |
+| AWS Secrets Manager | Medium | relevant for AWS cloud |
+| GCP Secret Manager | Medium | relevant for GCP cloud |
+| Azure Key Vault | Medium | relevant for Microsoft companies |
+| Doppler | Medium | popular as a developer-first secrets manager |
+| Infisical | Medium | open source and developer-first |
+| Local encrypted provider | Low/Medium | useful for demo, testing, and offline dev |
 
 ### Provider capabilities
 
-Cada provider deve expor capabilities:
+Each provider should expose capabilities:
 
 ```json
 {
@@ -312,15 +306,15 @@ Cada provider deve expor capabilities:
 }
 ```
 
-Isso permite ao Harpo alertar o usuário quando a segurança real depende apenas de escopo lógico local.
+This allows Harpo to warn the user when actual security depends only on local logical scope.
 
 ---
 
 ## 8.3 Policy-as-code
 
-Arquivo `harpo.yml` deve evoluir para política completa.
+The `harpo.yml` file should evolve into a complete policy.
 
-Exemplo:
+Example:
 
 ```yaml
 version: 1
@@ -369,9 +363,9 @@ policies:
 
 ## 8.4 Session grants
 
-Session grant é o conceito de produto mais importante.
+The session grant is the most important product concept.
 
-Um grant deve responder:
+A grant should answer:
 
 ```text
 Quem pode usar?
@@ -384,7 +378,7 @@ Com qual modo de segurança?
 O uso foi auditado?
 ```
 
-Exemplo:
+Example:
 
 ```json
 {
@@ -409,57 +403,57 @@ Exemplo:
 
 ## 8.5 Delivery modes
 
-### 8.5.1 `run` — modo recomendado
+### 8.5.1 `run` — recommended mode
 
 ```bash
 harpo run --profile graces-dev -- claude
 ```
 
-Harpo inicia o processo filho e controla o ambiente.
+Harpo starts the child process and controls the environment.
 
-### 8.5.2 `exec` — comando pontual
+### 8.5.2 `exec` — one-off command
 
 ```bash
 harpo exec --with gitlab.ad.read:GITLAB_TOKEN -- glab repo list
 ```
 
-### 8.5.3 `env render` — compatibilidade
+### 8.5.3 `env render` — compatibility
 
 ```bash
 harpo env render --profile graces-dev --out .harpo/.env.session --ttl 30m
 ```
 
-### 8.5.4 `proxy` — versão avançada
+### 8.5.4 `proxy` — advanced version
 
-Em vez de entregar o token ao processo, Harpo pode agir como proxy local:
+Instead of delivering the token to the process, Harpo can act as a local proxy:
 
 ```bash
 harpo proxy start --profile gitlab-dev
 ```
 
-O agente chama:
+The agent calls:
 
 ```bash
 harpo gitlab projects list
 ```
 
-Ou acessa um endpoint local autorizado:
+Or accesses an authorized local endpoint:
 
 ```text
 http://127.0.0.1:<port>/gitlab/projects
 ```
 
-Neste modo, o token nunca entra no ambiente do agente.
+In this mode, the token never enters the agent's environment.
 
-### 8.5.5 `fd/stdin` — versão avançada
+### 8.5.5 `fd/stdin` — advanced version
 
-Para ferramentas compatíveis:
+For compatible tools:
 
 ```bash
 harpo exec --secret gitlab.ad.read --stdin -- some-command
 ```
 
-Ou uso de file descriptor temporário para evitar env vars.
+Or use of a temporary file descriptor to avoid env vars.
 
 ---
 
@@ -467,49 +461,49 @@ Ou uso de file descriptor temporário para evitar env vars.
 
 ### Claude Code
 
-Harpo deve gerar:
+Harpo should generate:
 
 - `CLAUDE.md`;
-- `.claude/settings.local.json`, quando aplicável;
-- regras de deny para `.env`, `.harpo/`, `bw`, `op`, `vault`, `printenv`, `env`, `set`;
-- instruções de uso de `harpo`;
-- comandos recomendados.
+- `.claude/settings.local.json`, when applicable;
+- deny rules for `.env`, `.harpo/`, `bw`, `op`, `vault`, `printenv`, `env`, `set`;
+- usage instructions for `harpo`;
+- recommended commands.
 
-Claude Code possui mecanismos de permissões e sandbox que podem bloquear acesso a recursos restritos e limitar comandos. Harpo deve se integrar a esses mecanismos sempre que possível.
+Claude Code has permission and sandbox mechanisms that can block access to restricted resources and limit commands. Harpo should integrate with these mechanisms whenever possible.
 
 ### Codex CLI
 
-Harpo deve gerar:
+Harpo should generate:
 
 - `AGENTS.md`;
-- recomendações de sandbox;
-- recomendações de approval policy;
-- regras locais quando disponíveis;
-- comandos recomendados como:
+- sandbox recommendations;
+- approval policy recommendations;
+- local rules when available;
+- recommended commands such as:
 
 ```bash
 harpo run --profile graces-dev -- codex --sandbox workspace-write --ask-for-approval on-request
 ```
 
-Codex separa tecnicamente sandbox e approval policy: sandbox define limites técnicos; approval policy define quando o agente precisa pedir confirmação.
+Codex technically separates sandbox and approval policy: the sandbox defines technical limits; the approval policy defines when the agent needs to ask for confirmation.
 
-### Cursor, Windsurf e outros
+### Cursor, Windsurf, and others
 
-Suporte inicial via documentação e `.env` temporário; suporte avançado via plugins ou MCP.
+Initial support via documentation and a temporary `.env`; advanced support via plugins or MCP.
 
 ---
 
-## 8.7 MCP server local
+## 8.7 Local MCP server
 
-Versão de mercado deve incluir um MCP server local opcional:
+The market version should include an optional local MCP server:
 
 ```bash
 harpo mcp start --profile graces-dev
 ```
 
-O MCP não deve expor secrets crus por padrão.
+The MCP should not expose raw secrets by default.
 
-Ferramentas MCP seguras:
+Safe MCP tools:
 
 ```text
 harpo.session.status
@@ -519,13 +513,13 @@ harpo.gitlab.projects.list
 harpo.aws.identity.get
 ```
 
-Ferramentas perigosas, como `harpo.secret.reveal`, devem ser desabilitadas por padrão.
+Dangerous tools, such as `harpo.secret.reveal`, should be disabled by default.
 
 ---
 
-## 8.8 TUI de autorização
+## 8.8 Authorization TUI
 
-Uma interface terminal interativa deve permitir:
+An interactive terminal interface should allow:
 
 ```text
 Select secrets for this agent session:
@@ -546,19 +540,19 @@ Confirm session grant? [y/N]
 
 ---
 
-## 8.9 Redaction avançada
+## 8.9 Advanced redaction
 
-Harpo deve conseguir mascarar:
+Harpo should be able to mask:
 
-- secrets exatos;
-- prefixos comuns;
-- tokens conhecidos por formato;
-- env vars sensíveis;
-- outputs de `harpo exec`;
-- logs internos;
-- mensagens de erro.
+- exact secrets;
+- common prefixes;
+- tokens known by format;
+- sensitive env vars;
+- outputs of `harpo exec`;
+- internal logs;
+- error messages.
 
-Tipos conhecidos:
+Known types:
 
 ```text
 GITLAB_TOKEN
@@ -578,7 +572,7 @@ ANTHROPIC_API_KEY
 
 ## 8.10 Secret scanning
 
-Harpo deve incluir scanner local simples:
+Harpo should include a simple local scanner:
 
 ```bash
 harpo scan
@@ -586,24 +580,24 @@ harpo scan --staged
 harpo scan --history
 ```
 
-Objetivo:
+Goal:
 
-- alertar `.env` trackeado;
-- detectar tokens em arquivos;
-- detectar secrets em `harpo.yml`;
-- instalar pre-commit hook opcional.
+- warn about a tracked `.env`;
+- detect tokens in files;
+- detect secrets in `harpo.yml`;
+- install an optional pre-commit hook.
 
 ---
 
 ## 8.11 Rotation assistant
 
-Harpo pode não rotacionar todos os secrets automaticamente, mas pode ajudar:
+Harpo may not rotate all secrets automatically, but it can help:
 
 ```bash
 harpo rotate plan gitlab.ad.read
 ```
 
-Saída:
+Output:
 
 ```text
 Secret: gitlab.ad.read
@@ -617,7 +611,7 @@ Suggested rotation:
 5. Confirm rotation complete.
 ```
 
-Para providers com API de rotação, implementar:
+For providers with a rotation API, implement:
 
 ```bash
 harpo rotate gitlab.ad.read
@@ -625,9 +619,9 @@ harpo rotate gitlab.ad.read
 
 ---
 
-## 8.12 Audit e compliance
+## 8.12 Audit and compliance
 
-Audit local:
+Local audit:
 
 ```json
 {
@@ -644,7 +638,7 @@ Audit local:
 }
 ```
 
-Versão enterprise pode exportar para:
+The enterprise version can export to:
 
 - JSONL;
 - OpenTelemetry;
@@ -657,46 +651,46 @@ Versão enterprise pode exportar para:
 
 ---
 
-## 9. Segurança target
+## 9. Target security
 
-### 9.1 Requisitos obrigatórios
+### 9.1 Mandatory requirements
 
-- Secrets nunca devem ser gravados em logs.
-- Secrets nunca devem ser impressos por padrão.
-- Configuração versionável nunca deve conter secrets.
-- Sessões devem ter TTL.
-- Profiles de agente devem negar produção por padrão.
-- Harpo deve remover tokens do provider do ambiente do agente.
-- `.env` deve ser exceção explícita, não padrão.
-- Redaction deve proteger stdout/stderr quando Harpo controla o processo.
-- Harpo deve ser compatível com deny/sandbox dos agentes.
-- Harpo deve ter testes de regressão contra vazamento.
+- Secrets must never be written to logs.
+- Secrets must never be printed by default.
+- Versionable configuration must never contain secrets.
+- Sessions must have a TTL.
+- Agent profiles must deny production by default.
+- Harpo must remove the provider tokens from the agent's environment.
+- `.env` must be an explicit exception, not the default.
+- Redaction must protect stdout/stderr when Harpo controls the process.
+- Harpo must be compatible with the agents' deny/sandbox.
+- Harpo must have regression tests against leakage.
 
-### 9.2 Segurança por nível
+### 9.2 Security by level
 
 #### Level 1 — Solo Developer
 
-- provider pessoal;
-- policy local;
-- audit local;
-- `run`, `exec`, `.env` temporário.
+- personal provider;
+- local policy;
+- local audit;
+- `run`, `exec`, temporary `.env`.
 
 #### Level 2 — Team
 
-- profiles compartilháveis;
+- shareable profiles;
 - policy-as-code;
-- providers de secrets manager;
-- audit exportável;
+- secrets manager providers;
+- exportable audit;
 - pre-commit scanning;
-- aprovação por ambiente.
+- approval per environment.
 
 #### Level 3 — Enterprise
 
 - SSO;
 - RBAC;
-- policy centralizada;
+- centralized policy;
 - SIEM;
-- secrets manager corporativo;
+- corporate secrets manager;
 - approval workflow;
 - compliance reporting;
 - dynamic secrets;
@@ -704,9 +698,9 @@ Versão enterprise pode exportar para:
 
 ---
 
-## 10. Experiência de instalação
+## 10. Installation experience
 
-### 10.1 Instalação desejada
+### 10.1 Desired installation
 
 ```bash
 # macOS/Linux
@@ -728,7 +722,7 @@ choco install harpo
  docker run --rm harpo/harpo version
 ```
 
-### 10.2 Primeiro uso ideal
+### 10.2 Ideal first use
 
 ```bash
 harpo init
@@ -743,27 +737,27 @@ harpo run --profile dev-agent -- claude
 
 ## 11. Developer experience
 
-O Harpo deve ser:
+Harpo should be:
 
-- previsível;
-- fácil de explicar;
-- seguro por padrão;
-- rápido;
+- predictable;
+- easy to explain;
+- secure by default;
+- fast;
 - cross-platform;
-- amigável para agentes;
-- amigável para humanos;
-- scriptável;
-- audível.
+- agent-friendly;
+- human-friendly;
+- scriptable;
+- auditable.
 
-### 11.1 Boas mensagens de erro
+### 11.1 Good error messages
 
-Ruim:
+Bad:
 
 ```text
 Error: provider failed
 ```
 
-Bom:
+Good:
 
 ```text
 Bitwarden vault is locked.
@@ -777,7 +771,7 @@ Harpo will not pass BW_SESSION to the agent process.
 
 ---
 
-## 12. Command surface target
+## 12. Target command surface
 
 ```bash
 harpo init
@@ -835,15 +829,15 @@ harpo mcp start --profile <name>
 
 ## 13. Open source governance
 
-### 13.1 Repositório
+### 13.1 Repository
 
-Sugestão:
+Suggestion:
 
 ```text
 github.com/harpo-sh/harpo
 ```
 
-Alternativas:
+Alternatives:
 
 ```text
 github.com/harpo-dev/harpo
@@ -851,7 +845,7 @@ github.com/harpocrates-dev/harpo
 github.com/adnilson/harpo
 ```
 
-### 13.2 Estrutura de repositório
+### 13.2 Repository structure
 
 ```text
 harpo/
@@ -878,7 +872,7 @@ harpo/
   scripts/
 ```
 
-### 13.3 Documentos obrigatórios
+### 13.3 Mandatory documents
 
 - `README.md`
 - `SECURITY.md`
@@ -889,50 +883,50 @@ harpo/
 - `docs/agents/claude-code.md`
 - `docs/agents/codex.md`
 
-### 13.4 Licença
+### 13.4 License
 
-Recomendação: **Apache-2.0**.
+Recommendation: **Apache-2.0**.
 
-Motivo:
+Reason:
 
-- baixa fricção para adoção corporativa;
-- boa aceitação em infraestrutura;
-- linguagem explícita sobre patentes;
-- permite monetização de serviços e extensões.
+- low friction for corporate adoption;
+- good acceptance in infrastructure;
+- explicit language about patents;
+- allows monetization of services and extensions.
 
-Alternativa estratégica:
+Strategic alternative:
 
-- **MPL-2.0** se quiser proteger melhor o core contra forks fechados diretos.
+- **MPL-2.0** if you want to better protect the core against direct closed forks.
 
-Evitar inicialmente:
+Avoid initially:
 
-- AGPL, se o objetivo for adoção ampla em empresas que evitam licenças copyleft fortes.
+- AGPL, if the goal is broad adoption in companies that avoid strong copyleft licenses.
 
 ---
 
-## 14. Estratégia de diferenciação para mercado
+## 14. Differentiation strategy for the market
 
-### 14.1 Tema central
+### 14.1 Central theme
 
 ```text
 AI agents should not need vault access to get work done.
 ```
 
-### 14.2 Narrativa
+### 14.2 Narrative
 
-Antes:
+Before:
 
 ```text
 Developers pasted secrets into prompts or stored them in .env files.
 ```
 
-Depois:
+After:
 
 ```text
 Developers grant scoped, temporary, auditable access to secrets through Harpo.
 ```
 
-### 14.3 Principais mensagens
+### 14.3 Key messages
 
 - “Stop pasting tokens into AI coding agents.”
 - “Use your existing vault. Add agent-safe access.”
@@ -942,17 +936,17 @@ Developers grant scoped, temporary, auditable access to secrets through Harpo.
 
 ---
 
-## 15. Possíveis páginas de documentação/marketing
+## 15. Possible documentation/marketing pages
 
 ### Home
 
-Título:
+Title:
 
 ```text
 Harpo — Agent-safe secrets for AI coding workflows
 ```
 
-Subtítulo:
+Subtitle:
 
 ```text
 Grant Claude Code, Codex and other coding agents temporary access to credentials from your existing vaults without exposing your vault, pasting tokens or committing .env files.
@@ -960,18 +954,18 @@ Grant Claude Code, Codex and other coding agents temporary access to credentials
 
 ### Security model
 
-Explicar claramente:
+Clearly explain:
 
-- o que Harpo protege;
-- o que Harpo não protege;
-- riscos de env vars;
-- riscos de `.env`;
+- what Harpo protects;
+- what Harpo does not protect;
+- risks of env vars;
+- risks of `.env`;
 - provider capabilities;
 - threat model.
 
 ### Providers
 
-Documentar:
+Document:
 
 - Bitwarden Password Manager;
 - Bitwarden Secrets Manager;
@@ -983,7 +977,7 @@ Documentar:
 
 ### Agents
 
-Documentar:
+Document:
 
 - Claude Code;
 - Codex;
@@ -994,94 +988,94 @@ Documentar:
 
 ---
 
-## 16. Métricas de sucesso
+## 16. Success metrics
 
 ### Open source
 
 - GitHub stars.
-- Instalações mensais.
-- Issues abertas por usuários reais.
-- Contribuidores externos.
-- Providers contribuídos pela comunidade.
-- Mentions em blogs, newsletters e comunidades de AI coding.
+- Monthly installs.
+- Issues opened by real users.
+- External contributors.
+- Providers contributed by the community.
+- Mentions in blogs, newsletters, and AI coding communities.
 
-### Produto
+### Product
 
-- Número de profiles criados.
-- Número de sessões iniciadas.
-- Número de secrets acessados via grants.
-- Uso de `harpo run` vs `.env`.
-- Adoção por times.
-- Redução de `.env` versionados.
-- Integrações com agentes.
+- Number of profiles created.
+- Number of sessions started.
+- Number of secrets accessed via grants.
+- Use of `harpo run` vs `.env`.
+- Adoption by teams.
+- Reduction of versioned `.env` files.
+- Integrations with agents.
 
-### Segurança
+### Security
 
-- Zero secrets em logs internos.
-- Testes automatizados de leak prevention.
-- Issues de segurança respondidas com SLA.
-- Auditoria revisável.
-- Threat model público.
+- Zero secrets in internal logs.
+- Automated leak prevention tests.
+- Security issues answered with an SLA.
+- Reviewable audit.
+- Public threat model.
 
 ---
 
-## 17. Roadmap de mercado
+## 17. Market roadmap
 
-### Fase 1 — MVP open source
+### Phase 1 — Open source MVP
 
-Objetivo: provar valor para dev solo.
+Goal: prove value for the solo dev.
 
-- CLI core.
+- Core CLI.
 - Bitwarden Password Manager provider.
 - `harpo run`.
 - `harpo exec`.
 - `harpo env render`.
 - `harpo agent setup claude/codex`.
-- audit local.
-- docs fortes.
+- local audit.
+- strong docs.
 
-### Fase 2 — Developer adoption
+### Phase 2 — Developer adoption
 
-Objetivo: adoção por comunidade.
+Goal: community adoption.
 
 - Homebrew/Winget/Chocolatey.
-- Provider 1Password.
-- Provider Bitwarden Secrets Manager.
+- 1Password provider.
+- Bitwarden Secrets Manager provider.
 - `harpo doctor`.
-- scanner básico.
-- exemplos reais.
-- website simples.
-- vídeos curtos.
+- basic scanner.
+- real examples.
+- simple website.
+- short videos.
 
-### Fase 3 — Team-ready
+### Phase 3 — Team-ready
 
-Objetivo: pequenos times.
+Goal: small teams.
 
-- policy-as-code robusto;
-- profiles compartilhados;
-- audit exportável;
-- provider Vault;
+- robust policy-as-code;
+- shared profiles;
+- exportable audit;
+- Vault provider;
 - AWS/GCP/Azure;
-- hooks de pre-commit;
-- modelos de `harpo.yml` por stack.
+- pre-commit hooks;
+- `harpo.yml` templates per stack.
 
-### Fase 4 — Agent-native platform
+### Phase 4 — Agent-native platform
 
-Objetivo: relevância em segurança para agentes.
+Goal: relevance in security for agents.
 
 - MCP server;
-- TUI de autorização;
+- authorization TUI;
 - proxy mode;
 - dynamic secrets;
 - command broker;
-- integração com Claude/Codex avançada;
+- advanced Claude/Codex integration;
 - plugin SDK.
 
-### Fase 5 — Enterprise/commercial
+### Phase 5 — Enterprise/commercial
 
-Objetivo: monetização.
+Goal: monetization.
 
-- console web;
+- web console;
 - central policy;
 - SSO;
 - RBAC;
@@ -1089,44 +1083,44 @@ Objetivo: monetização.
 - audit aggregation;
 - SIEM integrations;
 - compliance reports;
-- suporte empresarial.
+- enterprise support.
 
 ---
 
-## 18. Riscos de produto
+## 18. Product risks
 
-| Risco | Mitigação |
+| Risk | Mitigation |
 |---|---|
-| Ser visto como “wrapper do bw” | Focar em session grants, agent integrations, policy e audit |
-| Segurança prometer mais do que entrega | Documentar limitações claramente |
-| `.env` temporário virar padrão inseguro | `run` como default; `.env` com alerta e modo explícito |
-| Muitos providers antes de produto maduro | Começar com 1-2 providers muito bons |
-| Agentes mudarem APIs/permissions | Arquitetura modular por agent integration |
-| Empresas desconfiarem de OSS novo | Threat model público, testes, security policy, releases assinadas |
-| Dificuldade de monetizar | Core OSS + team/enterprise features |
+| Being seen as a “bw wrapper” | Focus on session grants, agent integrations, policy, and audit |
+| Security promising more than it delivers | Document limitations clearly |
+| Temporary `.env` becoming an insecure default | `run` as default; `.env` with a warning and explicit mode |
+| Too many providers before a mature product | Start with 1-2 very good providers |
+| Agents changing APIs/permissions | Modular architecture per agent integration |
+| Companies distrusting new OSS | Public threat model, tests, security policy, signed releases |
+| Difficulty monetizing | OSS core + team/enterprise features |
 
 ---
 
-## 19. Requisitos para parecer sério no mercado
+## 19. Requirements to look serious in the market
 
-Antes de divulgar amplamente, o Harpo deve ter:
+Before broad publicity, Harpo should have:
 
-- README excelente com problema, demo e threat model.
-- Instalação simples.
-- Demo GIF ou vídeo curto.
-- `SECURITY.md` claro.
-- Documentação de limitações.
-- Testes automatizados.
-- Releases assinadas ou checksums.
-- Exemplos com Claude Code e Codex.
-- Integração real com Bitwarden.
-- Página “Why Harpo?” comparando com alternativas.
-- Página “Security model”.
-- Página “What Harpo does not protect against”.
+- An excellent README with the problem, demo, and threat model.
+- Simple installation.
+- A demo GIF or short video.
+- A clear `SECURITY.md`.
+- Documentation of limitations.
+- Automated tests.
+- Signed releases or checksums.
+- Examples with Claude Code and Codex.
+- Real integration with Bitwarden.
+- A “Why Harpo?” page comparing it with alternatives.
+- A “Security model” page.
+- A “What Harpo does not protect against” page.
 
 ---
 
-## 20. README inicial sugerido
+## 20. Suggested initial README
 
 ```md
 # Harpo
@@ -1159,9 +1153,9 @@ harpo run --profile my-project-dev -- claude
 
 ---
 
-## 21. Estratégia de conteúdo
+## 21. Content strategy
 
-Temas de artigos:
+Article topics:
 
 1. “Stop pasting secrets into AI coding agents.”
 2. “Why AI coding agents need scoped secret grants.”
@@ -1173,46 +1167,46 @@ Temas de artigos:
 
 ---
 
-## 22. Decisões importantes de produto
+## 22. Important product decisions
 
-### 22.1 `run` deve ser o caminho principal
+### 22.1 `run` should be the main path
 
-Porque permite controlar o ambiente do processo desde o início.
+Because it allows controlling the process environment from the start.
 
-### 22.2 `.env` deve ser compatibilidade, não default
+### 22.2 `.env` should be compatibility, not default
 
-Porque `.env` é plaintext em disco.
+Because `.env` is plaintext on disk.
 
-### 22.3 Provider Password Manager deve mostrar aviso
+### 22.3 The Password Manager provider should display a warning
 
-Porque cofre pessoal desbloqueado pode ter acesso amplo.
+Because an unlocked personal vault may have broad access.
 
-### 22.4 Secrets Manager deve ser recomendado para times
+### 22.4 Secrets Manager should be recommended for teams
 
-Porque permite melhor separação entre secrets pessoais e secrets de máquina/projeto.
+Because it allows better separation between personal secrets and machine/project secrets.
 
-### 22.5 O threat model deve ser honesto
+### 22.5 The threat model should be honest
 
-Harpo reduz risco, mas não transforma agente local em ambiente perfeitamente isolado.
+Harpo reduces risk, but it does not turn a local agent into a perfectly isolated environment.
 
 ---
 
-## 23. Modelo comercial possível
+## 23. Possible commercial model
 
 ### Open Source Core
 
-Grátis:
+Free:
 
 - CLI;
-- providers básicos;
+- basic providers;
 - local policies;
-- audit local;
+- local audit;
 - agent setup;
 - plugin SDK.
 
 ### Harpo Team
 
-Pago:
+Paid:
 
 - policy bundles;
 - audit export;
@@ -1223,9 +1217,9 @@ Pago:
 
 ### Harpo Enterprise
 
-Pago:
+Paid:
 
-- console central;
+- central console;
 - SSO/SAML/OIDC;
 - RBAC;
 - remote approvals;
@@ -1235,103 +1229,97 @@ Pago:
 - customer support;
 - private plugins.
 
-### Serviços
+### Services
 
-- consultoria de implantação;
-- hardening de workflows com Claude/Codex;
-- criação de policies por empresa;
-- treinamento de AI-native secure development.
+- deployment consulting;
+- hardening of workflows with Claude/Codex;
+- creation of per-company policies;
+- AI-native secure development training.
 
 ---
 
-## 24. Escolha de stack para mercado
+## 24. Stack choice for the market
 
-### Opção A — Go
+### Option A — Go
 
-Vantagens:
+Advantages:
 
-- single binary simples;
-- ótimo para CLI;
-- fácil distribuição;
-- boa performance;
-- adoção forte em DevOps.
+- simple single binary;
+- great for CLI;
+- easy distribution;
+- good performance;
+- strong adoption in DevOps.
 
-### Opção B — Rust
+### Option B — Rust
 
-Vantagens:
+Advantages:
 
-- reputação forte em segurança;
-- binário performático;
-- controle fino;
-- boa imagem para ferramenta de segurança.
+- strong reputation in security;
+- performant binary;
+- fine-grained control;
+- good image for a security tool.
 
-### Opção C — .NET
+### Option C — .NET
 
-Vantagens:
+Advantages:
 
-- excelente produtividade para criador com background .NET;
+- excellent productivity for a creator with a .NET background;
 - cross-platform;
 - single-file publish;
-- bom ecossistema;
-- Spectre.Console oferece ótima UX.
+- good ecosystem;
+- Spectre.Console offers great UX.
 
-Recomendação pragmática:
+Pragmatic recommendation:
 
 ```text
 Começar em .NET se isso acelerar muito a entrega.
 Reavaliar Go/Rust apenas se distribuição, performance ou percepção de mercado virarem gargalo.
 ```
 
-Um produto entregue e útil é mais importante que a stack ideal.
+A delivered and useful product is more important than the ideal stack.
 
 ---
 
-## 25. Versão 1.0: definição de pronto para mercado
+## 25. Version 1.0: definition of market-ready
 
-Harpo 1.0 deve ter:
+Harpo 1.0 should have:
 
-- CLI estável.
-- Instalação simples em Windows, macOS e Linux.
+- A stable CLI.
+- Simple installation on Windows, macOS, and Linux.
 - Bitwarden Password Manager provider.
 - Bitwarden Secrets Manager provider.
 - 1Password provider.
-- `harpo run` maduro.
-- `harpo exec` maduro.
-- `harpo env render` seguro.
+- A mature `harpo run`.
+- A mature `harpo exec`.
+- A secure `harpo env render`.
 - `harpo agent setup claude`.
 - `harpo agent setup codex`.
-- policy-as-code validável.
-- audit local e exportável.
-- scanner básico.
-- docs de segurança.
-- threat model público.
-- releases assinadas/checksums.
-- testes automatizados de leak prevention.
+- Validatable policy-as-code.
+- Local and exportable audit.
+- A basic scanner.
+- Security docs.
+- A public threat model.
+- Signed releases/checksums.
+- Automated leak prevention tests.
 
 ---
 
 ## 26. North Star
 
-A métrica conceitual do Harpo é:
+Harpo's conceptual metric is:
 
 ```text
 Quantas vezes um desenvolvedor deixou de colar um secret no prompt ou salvar um .env inseguro porque o Harpo tornou o caminho seguro mais fácil?
 ```
 
-O objetivo final não é apenas proteger secrets.
+The ultimate goal is not just to protect secrets.
 
-O objetivo é tornar o desenvolvimento com agentes de IA **mais produtivo, mais auditável e mais seguro por padrão**.
+The goal is to make development with AI agents **more productive, more auditable, and more secure by default**.
 
 ---
 
-## 27. Frase final de posicionamento
+## 27. Final positioning sentence
 
 ```text
 Harpo is the missing security layer between AI coding agents and developer secrets.
-```
-
-Em português:
-
-```text
-Harpo é a camada de segurança que faltava entre agentes de programação com IA e os secrets dos desenvolvedores.
 ```

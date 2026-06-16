@@ -2,7 +2,7 @@
 
 Harpo is a security tool. We aim to be honest about both what it protects and
 what it does not. This document summarizes the threat model; the full design
-rationale lives in [`harpo-mvp-spec.md`](harpo-mvp-spec.md) §7 and §15.
+rationale lives in [`docs/mvp-spec.md`](docs/mvp-spec.md) §7 and §15.
 
 ## What Harpo protects against
 

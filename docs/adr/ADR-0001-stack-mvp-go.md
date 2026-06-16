@@ -3,7 +3,7 @@
 **Status:** Accepted
 **Date:** 2026-06-16
 **Decider:** Ad Soares
-**Product context:** Harpo — a local secret broker for AI coding agents (see `harpo-mvp-spec.md`)
+**Product context:** Harpo — a local secret broker for AI coding agents (see `docs/mvp-spec.md`)
 
 ---
 

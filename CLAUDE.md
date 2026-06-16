@@ -14,8 +14,8 @@ Core principle that governs every design decision:
 
 This repository currently contains **only specification documents — no code, no build, no tests, no chosen stack committed.** Do not assume any toolchain exists yet. The two specs are the source of truth:
 
-- `harpo-mvp-spec.md` — the **MVP** to build first. Scoped down to one provider (Bitwarden CLI), `run`/`exec`/`env render`, agent setup for Claude/Codex, local audit. **Build against this spec.**
-- `harpo-market-ready-spec.md` — the long-term v1.0 / market vision (more providers, MCP server, proxy mode, TUI, policy-as-code, scanning, rotation, commercial tiers). Treat as roadmap context, **not** as MVP scope.
+- `docs/mvp-spec.md` — the **MVP** to build first. Scoped down to one provider (Bitwarden CLI), `run`/`exec`/`env render`, agent setup for Claude/Codex, local audit. **Build against this spec.**
+- `docs/market-ready-spec.md` — the long-term v1.0 / market vision (more providers, MCP server, proxy mode, TUI, policy-as-code, scanning, rotation, commercial tiers). Treat as roadmap context, **not** as MVP scope.
 
 When implementing, the MVP spec's "Fora do MVP" (out of scope) list is binding — do not pull market-ready features into the MVP without explicit decision from Ad.
 
@@ -89,4 +89,4 @@ When adding any feature, ask: does the agent gain a path to the raw vault, a lon
 - Commits follow **Conventional Commits**.
 - This project lives under `marca-pessoal/` (founder's personal projects). It is positioned as a public open-source product (target license **Apache-2.0**).
 - Project tagline: *A local secret broker for AI coding agents.*
-- Note: the original `harpo-mvp-spec.md` and `harpo-market-ready-spec.md` were authored in PT-BR; translate only when asked.
+- The specs live in `docs/mvp-spec.md` and `docs/market-ready-spec.md` (translated to English from the original PT-BR drafts).

@@ -35,8 +35,8 @@ Early MVP, under active development. Built in **Go** (decision recorded in
 MVP targets a single provider — **Bitwarden Password Manager** via the `bw`
 CLI. Specs:
 
-- [`harpo-mvp-spec.md`](harpo-mvp-spec.md) — what is being built now.
-- [`harpo-market-ready-spec.md`](harpo-market-ready-spec.md) — long-term vision.
+- [`docs/mvp-spec.md`](docs/mvp-spec.md) — what is being built now.
+- [`docs/market-ready-spec.md`](docs/market-ready-spec.md) — long-term vision.
 
 ## Install (from source)
 
