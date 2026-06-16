@@ -35,6 +35,7 @@ func TestBuildChildEnvStripsOtherVaultTokens(t *testing.T) {
 	base := []string{
 		"OP_SESSION_my=abc",
 		"OP_SERVICE_ACCOUNT_TOKEN=ops_tok",
+		"OP_CONNECT_TOKEN=conn_tok",
 		"VAULT_TOKEN=hvs.tok",
 		"KEEPER_PASSWORD=master-pw",
 		"KSM_CONFIG=base64cfg",

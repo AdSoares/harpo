@@ -92,12 +92,27 @@ Type: `keeper-secrets-manager`. Implemented by shelling out to the `ksm` CLI.
   is genuinely scoped (least privilege), not just logical scope. This makes KSM
   the recommended Keeper surface for agent-safe, machine-to-machine use.
 
+## Provider: 1Password
+
+Type: `1password`. Implemented by shelling out to the `op` CLI (v2).
+
+- Probes `op whoami` to report sign-in state (`unlocked` when signed in,
+  `unauthenticated` otherwise).
+- Resolves the field with a 1Password **secret reference** via `op read
+  "op://<vault>/<item>/<field>"`, which returns the raw value. The harpo `ref`
+  is the `<vault>/<item>` path (a section may be included as
+  `<vault>/<item>/<section>`); the field is appended automatically.
+- Never lists the vault on behalf of an agent and never writes values to stdout.
+- `supportsScopedAccess` is `false` by default: a regular `op signin` grants
+  broad access across the user's vaults, so Harpo applies only logical scope. A
+  1Password **service account** scoped to specific vaults provides real scope —
+  an operational choice that the adapter reports conservatively as unscoped.
+
 ## Planned providers
 
 The interface is designed to grow. Planned adapters include:
 
 - Bitwarden Secrets Manager (machine identities, finer scope)
-- 1Password
 - HashiCorp Vault
 - AWS Secrets Manager, GCP Secret Manager, Azure Key Vault
 - Infisical, Doppler

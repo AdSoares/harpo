@@ -55,10 +55,10 @@ harpo run --profile my-project-dev -- claude
 Early MVP, under active development. Built in **Go** (decision recorded in
 [`docs/adr/ADR-0001-stack-mvp-go.md`](docs/adr/ADR-0001-stack-mvp-go.md)).
 Supported providers: **Bitwarden Password Manager** (`bw`), **Keeper Commander**
-(`keeper`), and **Keeper Secrets Manager** (`ksm`, scoped machine identity). The
-provider layer is pluggable; planned providers include Bitwarden Secrets
-Manager, 1Password, HashiCorp Vault, AWS Secrets Manager, Infisical and Doppler.
-See [`docs/providers.md`](docs/providers.md).
+(`keeper`), **Keeper Secrets Manager** (`ksm`, scoped machine identity), and
+**1Password** (`op`). The provider layer is pluggable; planned providers include
+Bitwarden Secrets Manager, HashiCorp Vault, AWS Secrets Manager, Infisical and
+Doppler. See [`docs/providers.md`](docs/providers.md).
 
 Specs:
 

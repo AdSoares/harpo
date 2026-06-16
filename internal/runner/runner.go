@@ -24,11 +24,12 @@ var DangerousEnvVars = []string{
 	"BW_PASSWORD",
 	"OP_SESSION", // 1Password (prefix match handled below)
 	"OP_SERVICE_ACCOUNT_TOKEN",
-	"VAULT_TOKEN",     // HashiCorp Vault
-	"KEEPER_PASSWORD", // Keeper Commander master password, if provided via env
-	"KSM_CONFIG",      // Keeper Secrets Manager machine config (base64 JSON)
-	"KSM_TOKEN",       // Keeper Secrets Manager one-time/binding token
-	"KSM_CLI_TOKEN",   // Keeper Secrets Manager CLI one-time token
+	"OP_CONNECT_TOKEN", // 1Password Connect server token
+	"VAULT_TOKEN",      // HashiCorp Vault
+	"KEEPER_PASSWORD",  // Keeper Commander master password, if provided via env
+	"KSM_CONFIG",       // Keeper Secrets Manager machine config (base64 JSON)
+	"KSM_TOKEN",        // Keeper Secrets Manager one-time/binding token
+	"KSM_CLI_TOKEN",    // Keeper Secrets Manager CLI one-time token
 }
 
 // isDangerous reports whether an environment variable name (the part before '=')
