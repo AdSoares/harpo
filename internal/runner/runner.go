@@ -6,6 +6,7 @@
 package runner
 
 import (
+	"io"
 	"os"
 	"os/exec"
 	"sort"
@@ -69,14 +70,22 @@ func BuildChildEnv(base []string, inject map[string]string) []string {
 	return out
 }
 
-// Run executes command with args in a child process whose environment is built
-// from the current environment minus dangerous variables, plus the injected
-// secrets. Stdio is wired to the parent so interactive agents work.
-func Run(command string, args []string, inject map[string]string) error {
+// RunWith executes command with args in a child process whose environment is
+// built from the current environment minus dangerous variables, plus the
+// injected secrets. The caller supplies stdio, which lets `harpo exec` route
+// output through a redacting writer while `harpo run` uses the raw terminal.
+func RunWith(command string, args []string, inject map[string]string, stdin io.Reader, stdout, stderr io.Writer) error {
 	cmd := exec.Command(command, args...)
 	cmd.Env = BuildChildEnv(os.Environ(), inject)
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
+	cmd.Stdin = stdin
+	cmd.Stdout = stdout
+	cmd.Stderr = stderr
 	return cmd.Run()
+}
+
+// Run executes command wired directly to the parent's stdio, so interactive
+// agents (the `harpo run` path) work normally. Output is NOT redacted here —
+// Harpo does not promise redaction inside interactive TUIs (MVP spec §10.8).
+func Run(command string, args []string, inject map[string]string) error {
+	return RunWith(command, args, inject, os.Stdin, os.Stdout, os.Stderr)
 }

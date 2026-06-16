@@ -5,6 +5,8 @@
 package redact
 
 import (
+	"bytes"
+	"io"
 	"regexp"
 	"strings"
 )
@@ -54,4 +56,49 @@ func (r *Redactor) Redact(s string) string {
 		s = re.ReplaceAllString(s, Mask)
 	}
 	return s
+}
+
+// Writer wraps an io.Writer and redacts data as it streams through. It buffers
+// partial lines and redacts each complete line before forwarding, so secrets
+// are never written to the underlying writer unmasked. Call Close to flush any
+// trailing partial line. This is the mechanism behind `harpo exec` redaction
+// (MVP spec §10.8); it is line-oriented and does not catch a secret split
+// across newlines.
+type Writer struct {
+	r   *Redactor
+	dst io.Writer
+	buf []byte
+}
+
+// NewWriter returns a redacting Writer that forwards to dst.
+func (r *Redactor) NewWriter(dst io.Writer) *Writer {
+	return &Writer{r: r, dst: dst}
+}
+
+// Write buffers p and flushes every complete line through the redactor. It
+// always reports len(p) consumed, per the io.Writer contract.
+func (w *Writer) Write(p []byte) (int, error) {
+	w.buf = append(w.buf, p...)
+	for {
+		i := bytes.IndexByte(w.buf, '\n')
+		if i < 0 {
+			break
+		}
+		line := string(w.buf[:i+1])
+		if _, err := io.WriteString(w.dst, w.r.Redact(line)); err != nil {
+			return 0, err
+		}
+		w.buf = w.buf[i+1:]
+	}
+	return len(p), nil
+}
+
+// Close flushes any remaining buffered (newline-less) content, redacted.
+func (w *Writer) Close() error {
+	if len(w.buf) == 0 {
+		return nil
+	}
+	_, err := io.WriteString(w.dst, w.r.Redact(string(w.buf)))
+	w.buf = nil
+	return err
 }

@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -9,6 +10,7 @@ import (
 	"github.com/harpo-sh/harpo/internal/audit"
 	"github.com/harpo-sh/harpo/internal/policy"
 	"github.com/harpo-sh/harpo/internal/provider"
+	"github.com/harpo-sh/harpo/internal/redact"
 	"github.com/harpo-sh/harpo/internal/runner"
 	"github.com/harpo-sh/harpo/internal/session"
 	"github.com/harpo-sh/harpo/internal/ui"
@@ -160,10 +162,21 @@ func newExecCmd() *cobra.Command {
 					Result:      "success",
 				})
 			}
-			// TODO(mvp): apply redact.Redactor to captured stdout/stderr for
-			// non-interactive commands (MVP spec §10.8). Currently stdio passes
-			// through directly via runner.Run.
-			return runner.Run(args[0], args[1:], inject)
+			// Route output through a redacting writer so resolved secret values
+			// (and known token formats) are masked in this command's
+			// stdout/stderr. `exec` targets non-interactive commands, where
+			// line-buffered redaction is appropriate (MVP spec §10.8).
+			values := make([]string, 0, len(inject))
+			for _, v := range inject {
+				values = append(values, v)
+			}
+			red := redact.New(values...)
+			outW := red.NewWriter(os.Stdout)
+			errW := red.NewWriter(os.Stderr)
+			runErr := runner.RunWith(args[0], args[1:], inject, os.Stdin, outW, errW)
+			_ = outW.Close()
+			_ = errW.Close()
+			return runErr
 		},
 	}
 	cmd.Flags().StringArrayVar(&with, "with", nil, "alias:ENV pair to inject (repeatable)")

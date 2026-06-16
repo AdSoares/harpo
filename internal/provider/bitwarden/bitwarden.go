@@ -10,8 +10,11 @@ package bitwarden
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
+	"fmt"
 	"os/exec"
+	"regexp"
 	"strings"
 
 	"github.com/harpo-sh/harpo/internal/provider"
@@ -80,27 +83,85 @@ func (p *Provider) Status() (provider.Status, error) {
 	return st, nil
 }
 
+// bwItem is the subset of a Bitwarden item we need to disambiguate matches.
+type bwItem struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+var uuidRe = regexp.MustCompile(`^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$`)
+
+func looksLikeUUID(s string) bool { return uuidRe.MatchString(s) }
+
 // Resolve returns the secret value for the given ref/field. The value is
 // sensitive and must never be logged or printed by callers.
 //
-// MVP-initial implementation: uses `bw get <field> <ref>`. Ref resolution will
-// be hardened (item id lookup, disambiguation) in a follow-up — see TODO.
+// It first resolves the ref to a single, unambiguous item id (so a search
+// string that matches multiple items fails with a clear message instead of a
+// raw `bw` error), then reads the requested field from that exact item.
 func (p *Provider) Resolve(ref provider.Ref) (string, error) {
 	field := ref.Field
 	if field == "" {
 		field = "password"
 	}
-	// TODO(mvp): support fields beyond bw's `get` verbs and disambiguate
-	// multiple matches for the search string instead of failing.
-	out, err := p.run("get", field, ref.Ref)
+	id, err := p.resolveItemID(ref.Ref)
+	if err != nil {
+		return "", err
+	}
+	out, err := p.run("get", field, id)
 	if err != nil {
 		return "", err
 	}
 	value := strings.TrimRight(out, "\r\n")
 	if value == "" {
-		return "", errors.New("bitwarden returned an empty value for ref")
+		return "", fmt.Errorf("bitwarden returned an empty value for field %q", field)
 	}
 	return value, nil
+}
+
+// resolveItemID turns a ref into a single item id. A ref that already looks
+// like an item UUID is used directly; otherwise it is treated as a search
+// string and disambiguated via pickItem.
+func (p *Provider) resolveItemID(ref string) (string, error) {
+	if looksLikeUUID(ref) {
+		return ref, nil
+	}
+	out, err := p.run("list", "items", "--search", ref)
+	if err != nil {
+		return "", err
+	}
+	var items []bwItem
+	if err := json.Unmarshal([]byte(out), &items); err != nil {
+		return "", fmt.Errorf("parsing bitwarden item list: %w", err)
+	}
+	item, err := pickItem(items, ref)
+	if err != nil {
+		return "", err
+	}
+	return item.ID, nil
+}
+
+// pickItem selects exactly one item for a ref. With multiple matches it prefers
+// a unique exact name match; otherwise it fails with a clear, value-free error.
+// It is pure so the disambiguation rules can be tested without the bw CLI.
+func pickItem(items []bwItem, ref string) (bwItem, error) {
+	switch len(items) {
+	case 0:
+		return bwItem{}, fmt.Errorf("no vault item matches ref %q", ref)
+	case 1:
+		return items[0], nil
+	default:
+		var exact []bwItem
+		for _, it := range items {
+			if it.Name == ref {
+				exact = append(exact, it)
+			}
+		}
+		if len(exact) == 1 {
+			return exact[0], nil
+		}
+		return bwItem{}, fmt.Errorf("ref %q matches %d vault items; use a more specific reference or the item id", ref, len(items))
+	}
 }
 
 // Test resolves the secret and reports metadata only — never the value.
