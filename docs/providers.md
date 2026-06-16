@@ -73,12 +73,30 @@ Type: `keeper-commander`. Implemented by shelling out to the `keeper`
   For fine-grained, scoped machine access, a future **Keeper Secrets Manager**
   adapter is the path.
 
+## Provider: Keeper Secrets Manager (KSM)
+
+Type: `keeper-secrets-manager`. Implemented by shelling out to the `ksm` CLI.
+
+- Probes `ksm profile list` to report readiness (`unlocked` when a profile is
+  configured, `unauthenticated` otherwise). KSM has no lock/unlock concept; it
+  uses a machine config bound to an Application.
+- Resolves the field with Keeper notation
+  (`ksm secret notation keeper://<UID>/field/<field>`), which returns the raw
+  value — avoiding the masked/tabular output of `ksm secret get`. A ref that is
+  not a UID is matched by title against `ksm secret list --json` and
+  disambiguated (unique exact title match, else a value-free "use the UID" error).
+- A KSM record UID is the same 22-character base64url shape as other Keeper UIDs.
+- Never lists the vault on behalf of an agent and never writes values to stdout.
+- **`supportsScopedAccess` is `true`** — unlike Keeper Commander, a KSM
+  Application is bound to specific shared folders, so the access Harpo brokers
+  is genuinely scoped (least privilege), not just logical scope. This makes KSM
+  the recommended Keeper surface for agent-safe, machine-to-machine use.
+
 ## Planned providers
 
 The interface is designed to grow. Planned adapters include:
 
 - Bitwarden Secrets Manager (machine identities, finer scope)
-- Keeper Secrets Manager (scoped machine identity)
 - 1Password
 - HashiCorp Vault
 - AWS Secrets Manager, GCP Secret Manager, Azure Key Vault
