@@ -25,6 +25,24 @@ Harpo keeps your vault as the source of truth and hands agents only the secrets
 you authorized, for the current project and session, then audits the use
 without ever storing the value.
 
+## Why Harpo, not just my vault?
+
+Some vaults already offer — or will soon offer — agent-oriented access
+features. Harpo stays useful and distinct because it is **vault-agnostic**:
+it brings access across *different* vaults into one consistent workflow.
+
+If you keep a company vault and a separate personal vault for side projects,
+Harpo gives your agents one standard way to use both — same scoping, same TTLs,
+same audit — instead of a different mechanism per vault.
+
+## Use cases
+
+- Grant a GitLab token to the current project only.
+- Load an AWS credential for a single 2-hour session.
+- Render a temporary, git-ignored `.env` for a local environment.
+- Launch the agent with env vars already injected — without revealing the values.
+- Audit which secrets were used, when, and in what context.
+
 ## Example
 
 ```bash
@@ -37,7 +55,10 @@ harpo run --profile my-project-dev -- claude
 Early MVP, under active development. Built in **Go** (decision recorded in
 [`docs/adr/ADR-0001-stack-mvp-go.md`](docs/adr/ADR-0001-stack-mvp-go.md)). The
 MVP targets a single provider — **Bitwarden Password Manager** via the `bw`
-CLI. Specs:
+CLI. The provider layer is pluggable; planned providers include 1Password,
+HashiCorp Vault, AWS Secrets Manager, Infisical and Doppler.
+
+Specs:
 
 - [`docs/mvp-spec.md`](docs/mvp-spec.md) — what is being built now.
 - [`docs/market-ready-spec.md`](docs/market-ready-spec.md) — long-term vision.
