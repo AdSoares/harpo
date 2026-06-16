@@ -1,0 +1,82 @@
+// Package runner spawns child processes (the AI agent or an arbitrary command)
+// with a controlled environment: dangerous inherited variables — above all
+// BW_SESSION — are stripped, and only authorized secrets are injected.
+//
+// This is the most security-critical component. See MVP spec §10.5 and §15.
+package runner
+
+import (
+	"os"
+	"os/exec"
+	"sort"
+	"strings"
+)
+
+// DangerousEnvVars are never passed to a child process started by Harpo. The
+// list intentionally covers vault session tokens across common providers so
+// that an agent can never inherit a live vault session. BW_SESSION is the
+// non-negotiable case for the MVP (MVP spec §15.4).
+var DangerousEnvVars = []string{
+	"BW_SESSION",
+	"BW_CLIENTID",
+	"BW_CLIENTSECRET",
+	"BW_PASSWORD",
+	"OP_SESSION",         // 1Password (prefix match handled below)
+	"OP_SERVICE_ACCOUNT_TOKEN",
+	"VAULT_TOKEN",        // HashiCorp Vault
+}
+
+// isDangerous reports whether an environment variable name (the part before '=')
+// must be stripped. Matches exact names and the OP_SESSION_* family.
+func isDangerous(name string) bool {
+	for _, d := range DangerousEnvVars {
+		if name == d {
+			return true
+		}
+	}
+	return strings.HasPrefix(name, "OP_SESSION_")
+}
+
+// BuildChildEnv returns the environment for a child process: it starts from
+// base (typically os.Environ()), removes every dangerous variable, then
+// applies the authorized injections. Injected variables always win over any
+// inherited value of the same name.
+//
+// It is pure and deterministic to keep it easy to test against leaks.
+func BuildChildEnv(base []string, inject map[string]string) []string {
+	out := make([]string, 0, len(base)+len(inject))
+	for _, kv := range base {
+		name := kv
+		if i := strings.IndexByte(kv, '='); i >= 0 {
+			name = kv[:i]
+		}
+		if isDangerous(name) {
+			continue
+		}
+		if _, overridden := inject[name]; overridden {
+			continue // injected value replaces inherited one
+		}
+		out = append(out, kv)
+	}
+	keys := make([]string, 0, len(inject))
+	for k := range inject {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys) // deterministic ordering
+	for _, k := range keys {
+		out = append(out, k+"="+inject[k])
+	}
+	return out
+}
+
+// Run executes command with args in a child process whose environment is built
+// from the current environment minus dangerous variables, plus the injected
+// secrets. Stdio is wired to the parent so interactive agents work.
+func Run(command string, args []string, inject map[string]string) error {
+	cmd := exec.Command(command, args...)
+	cmd.Env = BuildChildEnv(os.Environ(), inject)
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
+}

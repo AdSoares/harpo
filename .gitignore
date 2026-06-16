@@ -1,0 +1,15 @@
+# Build output
+/harpo
+/harpo.exe
+/dist/
+*.exe
+*.test
+
+# Go
+*.out
+coverage.*
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/

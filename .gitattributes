@@ -1,0 +1,7 @@
+# Normalize line endings to LF for a cross-platform Go project.
+* text=auto eol=lf
+
+# Explicitly treat binaries as binary.
+*.png binary
+*.jpg binary
+*.gif binary
