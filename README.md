@@ -122,7 +122,7 @@ protect against.
 - [Security model](docs/security-model.md) · [Threat model](docs/threat-model.md)
 - [Providers](docs/providers.md) · [Policies](docs/policies.md)
 - Agents: [Claude Code](docs/agents/claude-code.md) · [Codex](docs/agents/codex.md)
-- Specs: [MVP](docs/mvp-spec.md) · [Market-ready](docs/market-ready-spec.md)
+- Specs: [MVP](docs/mvp-spec.md) · [Market-ready](docs/market-ready-spec.md) · [Managed unlock](docs/specs/managed-unlock.md)
 
 ## Contributing
 
