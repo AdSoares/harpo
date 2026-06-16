@@ -10,7 +10,8 @@ secrets, the runner, or the audit log.
 
 ## Ground rules
 
-- Be respectful and constructive. Assume good intent.
+- Be respectful and constructive. Assume good intent. This project follows our
+  [Code of Conduct](CODE_OF_CONDUCT.md).
 - All commits, code, comments, and documents are written in **English**.
 - Discuss non-trivial changes in an issue before opening a large PR.
 
