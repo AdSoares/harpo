@@ -11,6 +11,7 @@ import (
 	"github.com/harpo-sh/harpo/internal/provider/keeper"
 	"github.com/harpo-sh/harpo/internal/provider/ksm"
 	"github.com/harpo-sh/harpo/internal/provider/onepassword"
+	"github.com/harpo-sh/harpo/internal/provider/vault"
 	"github.com/harpo-sh/harpo/internal/ui"
 )
 
@@ -31,8 +32,10 @@ func newProvider(id, providerType string) (provider.Provider, error) {
 		return ksm.New(id), nil
 	case onepassword.TypeName:
 		return onepassword.New(id), nil
+	case vault.TypeName:
+		return vault.New(id), nil
 	default:
-		return nil, fmt.Errorf("unsupported provider type %q (supported: %q, %q, %q, %q)", providerType, bitwarden.TypeName, keeper.TypeName, ksm.TypeName, onepassword.TypeName)
+		return nil, fmt.Errorf("unsupported provider type %q (supported: %q, %q, %q, %q, %q)", providerType, bitwarden.TypeName, keeper.TypeName, ksm.TypeName, onepassword.TypeName, vault.TypeName)
 	}
 }
 

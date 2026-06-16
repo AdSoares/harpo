@@ -108,12 +108,29 @@ Type: `1password`. Implemented by shelling out to the `op` CLI (v2).
   1Password **service account** scoped to specific vaults provides real scope —
   an operational choice that the adapter reports conservatively as unscoped.
 
+## Provider: HashiCorp Vault
+
+Type: `hashicorp-vault`. Implemented by shelling out to the `vault` CLI.
+
+- Probes `vault token lookup` to report auth state (`unlocked` when the token is
+  valid, `unauthenticated` otherwise). Uses the standard `VAULT_ADDR` /
+  `VAULT_TOKEN` environment.
+- Resolves a field from the **KV** secrets engine via
+  `vault kv get -field=<field> <path>`, which prints the raw value and
+  auto-detects KV v1/v2. The harpo `ref` is the KV path (e.g. `secret/myapp`)
+  and the field is the key within it.
+- Never lists the vault on behalf of an agent and never writes values to stdout.
+- **`supportsScopedAccess` is `true`** — access is governed by the token's
+  policies and enforced server-side per path, so the scope is real, not merely
+  logical. (A root token is broad; scope reflects the token you use.)
+- The MVP adapter brokers static KV reads; Vault's native dynamic secrets,
+  rotation and audit devices are out of scope for this adapter.
+
 ## Planned providers
 
 The interface is designed to grow. Planned adapters include:
 
 - Bitwarden Secrets Manager (machine identities, finer scope)
-- HashiCorp Vault
 - AWS Secrets Manager, GCP Secret Manager, Azure Key Vault
 - Infisical, Doppler
 
