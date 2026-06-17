@@ -124,6 +124,7 @@ protect against.
 - Agents: [Claude Code](docs/agents/claude-code.md) · [Codex](docs/agents/codex.md)
 - Specs: [MVP](docs/mvp-spec.md) · [Market-ready](docs/market-ready-spec.md)
 - Feature specs: [Managed unlock](docs/specs/managed-unlock.md) · [Proxy / MCP mode](docs/specs/proxy-mcp-mode.md)
+- [Near-term roadmap](docs/roadmap.md)
 
 ## Contributing
 
