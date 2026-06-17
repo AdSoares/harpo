@@ -13,6 +13,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
 	"os/exec"
 	"regexp"
 	"strings"
@@ -25,8 +26,9 @@ const TypeName = "bitwarden-password-manager"
 
 // Provider adapts the `bw` CLI to the provider.Provider interface.
 type Provider struct {
-	id  string
-	bin string // path/name of the bw binary
+	id      string
+	bin     string // path/name of the bw binary
+	session string // managed BW_SESSION, set by Unlock; empty = use ambient env
 }
 
 // New returns a Bitwarden provider with the given config id.
@@ -48,7 +50,46 @@ func (p *Provider) Capabilities() provider.Capabilities {
 		SupportsAudit:          false,
 		SupportsRotation:       false,
 		SupportsDynamicSecrets: false,
+		SupportsUnlock:         true,
 	}
+}
+
+// Unlock unlocks the vault with the given master password and holds the
+// resulting BW_SESSION in memory for this provider instance. The password is
+// passed over stdin (never as an argument) and is not retained after the call;
+// the session is never logged or passed to child processes.
+func (p *Provider) Unlock(master string) (provider.Session, error) {
+	cmd := exec.Command(p.bin, "unlock", "--raw")
+	cmd.Stdin = strings.NewReader(master + "\n")
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+	if err := cmd.Run(); err != nil {
+		msg := strings.TrimSpace(stderr.String())
+		if msg == "" {
+			msg = err.Error()
+		}
+		return provider.Session{}, errors.New("bw unlock: " + msg)
+	}
+	session := strings.TrimSpace(stdout.String())
+	if session == "" {
+		return provider.Session{}, errors.New("bw unlock returned an empty session")
+	}
+	p.session = session
+	return provider.Session{Name: "BW_SESSION", Value: session}, nil
+}
+
+// envWithSession returns base with BW_SESSION forced to session (replacing any
+// inherited value), so the managed session — not an ambient one — is used.
+func envWithSession(base []string, session string) []string {
+	out := make([]string, 0, len(base)+1)
+	for _, kv := range base {
+		if strings.HasPrefix(kv, "BW_SESSION=") {
+			continue
+		}
+		out = append(out, kv)
+	}
+	return append(out, "BW_SESSION="+session)
 }
 
 // Status probes the bw CLI and reports vault state. It never inherits or
@@ -181,6 +222,9 @@ func (p *Provider) Test(ref provider.Ref) (provider.TestResult, error) {
 // only for error context and is not surfaced to general output.
 func (p *Provider) run(args ...string) (string, error) {
 	cmd := exec.Command(p.bin, args...)
+	if p.session != "" {
+		cmd.Env = envWithSession(os.Environ(), p.session)
+	}
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr

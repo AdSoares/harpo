@@ -1,6 +1,42 @@
 package bitwarden
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
+
+func TestEnvWithSession(t *testing.T) {
+	base := []string{"PATH=/usr/bin", "BW_SESSION=ambient-old", "HOME=/home/ad"}
+	got := envWithSession(base, "managed-new")
+
+	count := 0
+	for _, kv := range got {
+		if strings.HasPrefix(kv, "BW_SESSION=") {
+			count++
+			if kv != "BW_SESSION=managed-new" {
+				t.Fatalf("expected managed session to win, got %q", kv)
+			}
+		}
+		if kv == "BW_SESSION=ambient-old" {
+			t.Fatal("ambient session must be replaced")
+		}
+	}
+	if count != 1 {
+		t.Fatalf("expected exactly one BW_SESSION, got %d", count)
+	}
+	if !contains(got, "PATH=/usr/bin") || !contains(got, "HOME=/home/ad") {
+		t.Fatal("benign vars must be preserved")
+	}
+}
+
+func contains(env []string, want string) bool {
+	for _, kv := range env {
+		if kv == want {
+			return true
+		}
+	}
+	return false
+}
 
 func TestPickItem(t *testing.T) {
 	t.Run("no match", func(t *testing.T) {

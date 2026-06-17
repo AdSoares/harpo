@@ -123,7 +123,7 @@ func newSecretTestCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			p, err := newProvider(sec.Provider, proj.cfg.Providers[sec.Provider].Type)
+			p, err := newProviderSet(proj).get(sec.Provider)
 			if err != nil {
 				return err
 			}

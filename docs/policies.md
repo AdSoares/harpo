@@ -31,10 +31,11 @@ resolved or any session is created.
 mode: strict
 
 policies:
-  allow_dotenv: false   # may `harpo env render` write a plaintext .env?
-  allow_reveal: false   # may secrets be revealed in the terminal?
-  default_ttl: 2h       # TTL used when none is given (non-strict)
-  max_ttl: 8h           # hard ceiling for any session TTL
+  allow_dotenv: false    # may `harpo env render` write a plaintext .env?
+  allow_reveal: false    # may secrets be revealed in the terminal?
+  manage_unlock: false   # may Harpo unlock the vault itself (vs. you running `bw unlock`)?
+  default_ttl: 2h        # TTL used when none is given (non-strict)
+  max_ttl: 8h            # hard ceiling for any session TTL
 ```
 
 How they are enforced:
@@ -46,6 +47,12 @@ How they are enforced:
 - **`allow_dotenv`** — `.env` rendering is always denied in strict mode; in
   other modes it additionally requires `allow_dotenv: true`, and the file may
   only be written inside `.harpo/`.
+- **`manage_unlock`** — when `true`, an unlock-capable provider (e.g. Bitwarden)
+  that reports `locked` is unlocked in-process: Harpo prompts for the master
+  password (no echo) only when a terminal is available, holds the session in
+  memory, and never exports it to the shell or the agent. Defaults to `false`
+  (you unlock the vault yourself). Persisting the session across runs (OS
+  keychain) is a later step — see [`specs/managed-unlock.md`](specs/managed-unlock.md).
 
 ## Advisory warnings
 

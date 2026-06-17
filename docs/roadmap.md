@@ -43,6 +43,12 @@ Bitwarden Password Manager.
 Suggested split: **M1a** = M1.1–M1.4 (in-memory, no cache), **M1b** = M1.5–M1.6
 (keychain cache + policy). M1a is shippable without the new dependency.
 
+**Status:** M1a is **implemented** — `Unlocker` interface + `SupportsUnlock`,
+Bitwarden `Unlock` (stdin) with the session held in memory, and auto-unlock in
+`run`/`exec`/`secret test` gated by `policies.manage_unlock` and a real TTY
+check. Standalone `harpo unlock`/`harpo lock` and the keychain cache are M1b
+(they need persistence to be useful across the short-lived Harpo processes).
+
 Risk/size: medium. Main risks: master-secret custody (secure prompt + stdin,
 never args/env/logs) and Go GC zeroization limits (see
 [`adr/ADR-0001-stack-mvp-go.md`](adr/ADR-0001-stack-mvp-go.md)).

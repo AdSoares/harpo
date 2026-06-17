@@ -31,13 +31,14 @@ func resolveProfile(proj *project, profileName string) (resolved, string, error)
 	if err != nil {
 		return resolved{}, "", err
 	}
+	pset := newProviderSet(proj)
 	out := resolved{inject: map[string]string{}}
 	for _, ps := range prof.Secrets {
 		sec, err := eng.CheckSecretAuthorized(ps.Secret)
 		if err != nil {
 			return resolved{}, "", err
 		}
-		p, err := newProvider(sec.Provider, proj.cfg.Providers[sec.Provider].Type)
+		p, err := pset.get(sec.Provider)
 		if err != nil {
 			return resolved{}, "", err
 		}
@@ -128,6 +129,7 @@ func newExecCmd() *cobra.Command {
 				return err
 			}
 			eng := policy.New(proj.cfg)
+			pset := newProviderSet(proj)
 			inject := map[string]string{}
 			var grants []session.Grant
 			for _, spec := range with {
@@ -139,7 +141,7 @@ func newExecCmd() *cobra.Command {
 				if err != nil {
 					return err
 				}
-				p, err := newProvider(sec.Provider, proj.cfg.Providers[sec.Provider].Type)
+				p, err := pset.get(sec.Provider)
 				if err != nil {
 					return err
 				}

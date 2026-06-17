@@ -52,6 +52,10 @@ Type: `bitwarden-password-manager`. Implemented by shelling out to the
 - `supportsScopedAccess` is `false`: an unlocked personal vault has broad access
   in the user's context, so Harpo applies only logical scope. For strong
   scoping, use a Secrets Manager provider (planned).
+- Supports **managed unlock**: with `policies.manage_unlock: true`, Harpo can
+  unlock a locked vault itself (master password prompt → stdin), holding the
+  session in memory and never exporting it. See [policies](policies.md) and
+  [`specs/managed-unlock.md`](specs/managed-unlock.md).
 
 ## Provider: Keeper Commander
 

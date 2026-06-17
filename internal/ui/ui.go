@@ -43,6 +43,21 @@ func Info(format string, a ...any) { fmt.Printf(format+"\n", a...) }
 // Dim prints faint, secondary text.
 func Dim(format string, a ...any) { fmt.Println(dimStyle.Render(fmt.Sprintf(format, a...))) }
 
+// Password prompts for a secret value with the input hidden (no echo). Used for
+// master passwords during managed unlock; the value is never displayed.
+func Password(prompt string) (string, error) {
+	var s string
+	err := huh.NewInput().
+		Title(prompt).
+		EchoMode(huh.EchoModePassword).
+		Value(&s).
+		Run()
+	if err != nil {
+		return "", err
+	}
+	return s, nil
+}
+
 // Confirm asks a yes/no question, defaulting to No. Returns true only on an
 // explicit yes. Used for dangerous actions that require explicit choice.
 func Confirm(prompt string) bool {

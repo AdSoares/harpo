@@ -6,6 +6,7 @@ package provider
 import (
 	"crypto/sha256"
 	"encoding/hex"
+	"time"
 )
 
 // VaultState describes whether a vault is reachable and unlocked.
@@ -37,6 +38,26 @@ type Capabilities struct {
 	SupportsAudit          bool
 	SupportsRotation       bool
 	SupportsDynamicSecrets bool
+	SupportsUnlock         bool
+}
+
+// Session is an unlocked provider session obtained via Unlock. The value is
+// sensitive: never log it, never persist it in plaintext, never pass it to a
+// child process.
+type Session struct {
+	Name      string    // env var the provider CLI needs (e.g. "BW_SESSION")
+	Value     string    // the session token
+	ExpiresAt time.Time // zero means unknown
+}
+
+// Unlocker is implemented by providers that have an interactive unlock step
+// (e.g. a master password). Providers without one do not implement it.
+type Unlocker interface {
+	// Unlock consumes a master secret (read via a secure prompt) and returns the
+	// session the provider uses for subsequent reads. Implementations must not
+	// log the master secret or the session, persist them in plaintext, or pass
+	// them to child processes.
+	Unlock(master string) (Session, error)
 }
 
 // Ref locates a single secret value within a vault.
