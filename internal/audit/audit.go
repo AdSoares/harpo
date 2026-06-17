@@ -21,6 +21,8 @@ type Event struct {
 	Profile     string `json:"profile,omitempty"`
 	Agent       string `json:"agent,omitempty"`
 	Project     string `json:"project,omitempty"`
+	Provider    string `json:"provider,omitempty"`
+	Cache       string `json:"cache,omitempty"`
 	SecretAlias string `json:"secret_alias,omitempty"`
 	Destination string `json:"destination,omitempty"`
 	Mode        string `json:"mode,omitempty"`

@@ -58,6 +58,9 @@ type Unlocker interface {
 	// log the master secret or the session, persist them in plaintext, or pass
 	// them to child processes.
 	Unlock(master string) (Session, error)
+	// SetSession installs a previously obtained session (e.g. one loaded from
+	// the OS keychain cache) so subsequent reads use it without re-prompting.
+	SetSession(Session)
 }
 
 // Ref locates a single secret value within a vault.

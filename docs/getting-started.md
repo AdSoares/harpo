@@ -59,6 +59,21 @@ harpo run --profile dev -- claude  # Harpo injects only the authorized secrets
 Harpo strips `BW_SESSION` from the child process, so the agent can use the
 credentials but cannot reach your vault.
 
+### Optional: let Harpo manage the unlock
+
+With `policies.manage_unlock: true`, Harpo unlocks a locked vault itself
+(prompting for the master password, never exporting the session to your shell).
+Add `policies.unlock_cache: keychain` to cache the session in the OS keychain so
+you are not re-prompted every run:
+
+```bash
+harpo unlock bw                    # prompt once; session cached with a TTL
+harpo run --profile dev -- claude  # reuses the cached session
+harpo lock bw                      # forget the cached session
+```
+
+See [policies](policies.md) for the knobs.
+
 ## One-off commands
 
 For a single command (not a long agent session), use `exec`:

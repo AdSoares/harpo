@@ -34,6 +34,8 @@ policies:
   allow_dotenv: false    # may `harpo env render` write a plaintext .env?
   allow_reveal: false    # may secrets be revealed in the terminal?
   manage_unlock: false   # may Harpo unlock the vault itself (vs. you running `bw unlock`)?
+  unlock_cache: none     # cache the unlocked session: keychain | none
+  unlock_cache_ttl: 15m  # session-cache TTL (capped by max_ttl)
   default_ttl: 2h        # TTL used when none is given (non-strict)
   max_ttl: 8h            # hard ceiling for any session TTL
 ```
@@ -51,8 +53,13 @@ How they are enforced:
   that reports `locked` is unlocked in-process: Harpo prompts for the master
   password (no echo) only when a terminal is available, holds the session in
   memory, and never exports it to the shell or the agent. Defaults to `false`
-  (you unlock the vault yourself). Persisting the session across runs (OS
-  keychain) is a later step — see [`specs/managed-unlock.md`](specs/managed-unlock.md).
+  (you unlock the vault yourself).
+- **`unlock_cache` / `unlock_cache_ttl`** — when `unlock_cache: keychain`, the
+  unlocked session is cached in the **OS keychain** with a TTL (default 15m,
+  capped by `max_ttl`), so `harpo run` reuses it across runs without
+  re-prompting. Only the session token is cached — never the master password.
+  `harpo unlock` populates the cache; `harpo lock` evicts it. Defaults to
+  `none`. See [`specs/managed-unlock.md`](specs/managed-unlock.md).
 
 ## Advisory warnings
 

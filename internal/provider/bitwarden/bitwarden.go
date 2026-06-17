@@ -79,6 +79,14 @@ func (p *Provider) Unlock(master string) (provider.Session, error) {
 	return provider.Session{Name: "BW_SESSION", Value: session}, nil
 }
 
+// SetSession installs a previously obtained BW_SESSION (e.g. from the keychain
+// cache) so subsequent bw subprocesses use it.
+func (p *Provider) SetSession(s provider.Session) {
+	if s.Name == "BW_SESSION" {
+		p.session = s.Value
+	}
+}
+
 // envWithSession returns base with BW_SESSION forced to session (replacing any
 // inherited value), so the managed session — not an ambient one — is used.
 func envWithSession(base []string, session string) []string {
