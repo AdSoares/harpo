@@ -36,6 +36,10 @@ policies:
   manage_unlock: false   # may Harpo unlock the vault itself (vs. you running `bw unlock`)?
   unlock_cache: none     # cache the unlocked session: keychain | none
   unlock_cache_ttl: 15m  # session-cache TTL (capped by max_ttl)
+  mcp:
+    enabled: false       # run the MCP server (`harpo mcp`)?
+  proxy:
+    exec_allowlist: []   # commands the harpo_exec MCP tool may run (empty = none)
   default_ttl: 2h        # TTL used when none is given (non-strict)
   max_ttl: 8h            # hard ceiling for any session TTL
 ```
@@ -60,6 +64,14 @@ How they are enforced:
   re-prompting. Only the session token is cached — never the master password.
   `harpo unlock` populates the cache; `harpo lock` evicts it. Defaults to
   `none`. See [`specs/managed-unlock.md`](specs/managed-unlock.md).
+- **`mcp.enabled`** — when `true`, `harpo mcp` serves value-free tools to an
+  agent over MCP (stdio). Defaults to `false`.
+- **`proxy.exec_allowlist`** — the commands the `harpo_exec` MCP tool may run
+  (matched on the base name). An **empty list denies every command**, so
+  brokered exec is opt-in per command. Shell interpreters (`bash`, `sh`,
+  `python`, `node`, …) are **always denied**, even if listed. The secret value
+  is injected into the command's environment and never returned to the agent.
+  See [`specs/proxy-mcp-mode.md`](specs/proxy-mcp-mode.md).
 
 ## Advisory warnings
 

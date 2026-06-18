@@ -25,6 +25,8 @@ type Event struct {
 	Cache       string `json:"cache,omitempty"`
 	SecretAlias string `json:"secret_alias,omitempty"`
 	Destination string `json:"destination,omitempty"`
+	Command     string `json:"command,omitempty"`
+	Reason      string `json:"reason,omitempty"`
 	Mode        string `json:"mode,omitempty"`
 	TTLSeconds  int    `json:"ttl_seconds,omitempty"`
 	Result      string `json:"result,omitempty"`

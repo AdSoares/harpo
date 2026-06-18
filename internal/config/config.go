@@ -79,20 +79,26 @@ type Profile struct {
 
 // Policies are the local policy knobs enforced by the policy engine.
 type Policies struct {
-	AllowDotenv    bool      `yaml:"allow_dotenv"`
-	AllowReveal    bool      `yaml:"allow_reveal"`
-	ManageUnlock   bool      `yaml:"manage_unlock"`
-	UnlockCache    string    `yaml:"unlock_cache,omitempty"`     // "keychain" | "none" (default none)
-	UnlockCacheTTL Duration  `yaml:"unlock_cache_ttl,omitempty"` // effective TTL is capped by max_ttl
-	MCP            MCPPolicy `yaml:"mcp,omitempty"`
-	DefaultTTL     Duration  `yaml:"default_ttl"`
-	MaxTTL         Duration  `yaml:"max_ttl"`
+	AllowDotenv    bool        `yaml:"allow_dotenv"`
+	AllowReveal    bool        `yaml:"allow_reveal"`
+	ManageUnlock   bool        `yaml:"manage_unlock"`
+	UnlockCache    string      `yaml:"unlock_cache,omitempty"`     // "keychain" | "none" (default none)
+	UnlockCacheTTL Duration    `yaml:"unlock_cache_ttl,omitempty"` // effective TTL is capped by max_ttl
+	MCP            MCPPolicy   `yaml:"mcp,omitempty"`
+	Proxy          ProxyPolicy `yaml:"proxy,omitempty"`
+	DefaultTTL     Duration    `yaml:"default_ttl"`
+	MaxTTL         Duration    `yaml:"max_ttl"`
 }
 
-// MCPPolicy governs the optional MCP server. It is off by default; more knobs
-// (allowlist, reveal exposure) are added with brokered exec.
+// MCPPolicy governs the optional MCP server. It is off by default.
 type MCPPolicy struct {
 	Enabled bool `yaml:"enabled,omitempty"`
+}
+
+// ProxyPolicy governs brokered execution (the harpo_exec MCP tool). An empty
+// allowlist denies every command, so brokered exec is opt-in per command.
+type ProxyPolicy struct {
+	ExecAllowlist []string `yaml:"exec_allowlist,omitempty"`
 }
 
 // Default returns a secure-by-default config for a new project.

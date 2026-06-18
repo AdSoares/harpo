@@ -20,7 +20,7 @@ func testServer(t *testing.T) *Server {
 		},
 	}
 	dir := t.TempDir()
-	return New(cfg, "dev", dir, dir, "test")
+	return New(cfg, "dev", dir, dir, "test", nil)
 }
 
 func TestSecretAvailableData(t *testing.T) {

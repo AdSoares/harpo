@@ -16,6 +16,12 @@ import (
 	"github.com/harpo-sh/harpo/internal/session"
 )
 
+// Resolver resolves a secret alias to its value. It is injected by the caller
+// (the cli package) to avoid an import cycle and to reuse provider creation and
+// managed unlock. The returned value is sensitive and is never sent to the
+// agent — only used to populate a brokered command's environment.
+type Resolver func(alias string) (string, error)
+
 // Server wires Harpo's value-free tools to an MCP stdio server.
 type Server struct {
 	cfg      *config.Config
@@ -23,11 +29,13 @@ type Server struct {
 	root     string
 	harpoDir string
 	version  string
+	resolve  Resolver
 }
 
-// New returns an MCP server bound to the given project/profile.
-func New(cfg *config.Config, profile, root, harpoDir, version string) *Server {
-	return &Server{cfg: cfg, profile: profile, root: root, harpoDir: harpoDir, version: version}
+// New returns an MCP server bound to the given project/profile. resolve may be
+// nil if only the read-only tools are needed.
+func New(cfg *config.Config, profile, root, harpoDir, version string, resolve Resolver) *Server {
+	return &Server{cfg: cfg, profile: profile, root: root, harpoDir: harpoDir, version: version, resolve: resolve}
 }
 
 // Run registers the tools and serves over stdio until the client disconnects.
@@ -45,6 +53,10 @@ func (s *Server) Run(ctx context.Context) error {
 		Name:        "harpo_audit_tail",
 		Description: "Return recent Harpo audit events. Audit records never contain secret values.",
 	}, s.auditTail)
+	sdk.AddTool(srv, &sdk.Tool{
+		Name:        "harpo_exec",
+		Description: "Run an allowlisted command with authorized secrets injected by Harpo, returning the (redacted) output. The secret values are never returned; the agent uses a credential without seeing it. Shell interpreters are denied.",
+	}, s.exec)
 	return srv.Run(ctx, &sdk.StdioTransport{})
 }
 

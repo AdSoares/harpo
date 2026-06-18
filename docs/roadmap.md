@@ -68,11 +68,18 @@ Spec: [`specs/proxy-mcp-mode.md`](specs/proxy-mcp-mode.md). Depends on M1
 | M2.3 | `harpo agent setup ... --mcp`: write `.mcp.json` (Claude) / Codex MCP config; keep deny rules; update the managed `CLAUDE.md`/`AGENTS.md` block + skill | safe path alongside the existing guardrail |
 | M2.4 | `harpo.yml` policy (`policies.mcp`, `policies.proxy`); audit events; leak guards | `mcp.enabled` defaults false; `reveal` stays off |
 
-**Status:** M2.1 is **implemented** — `harpo mcp` runs an MCP stdio server
-(`github.com/modelcontextprotocol/go-sdk`) exposing the read-only,
-value-free tools `harpo_session_status`, `harpo_secret_available` and
-`harpo_audit_tail`, gated by `policies.mcp.enabled` (default false).
-M2.2–M2.4 (brokered exec, `agent setup --mcp`, full policy) are pending.
+**Status:** M2.1 + M2.2 are **implemented**.
+- M2.1: `harpo mcp` runs an MCP stdio server
+  (`github.com/modelcontextprotocol/go-sdk`) exposing the read-only,
+  value-free tools `harpo_session_status`, `harpo_secret_available` and
+  `harpo_audit_tail`, gated by `policies.mcp.enabled` (default false).
+- M2.2: the `harpo_exec` brokered-exec tool — `policies.proxy.exec_allowlist`
+  (empty denies all), shell-interpreter denial, profile-scoped alias
+  authorization, secret resolution reusing provider/unlock, redacted output
+  capture, and `mcp.exec` / `mcp.tool.denied` audit events. The secret value
+  is never returned to the agent ("use without sight").
+
+M2.3 (`agent setup --mcp`) and M2.4 (full policy + leak guards) are pending.
 
 Deferred within M2: the loopback **API proxy** (§4b of the spec) and
 `harpo_secret_reveal` (kept disabled).
