@@ -32,6 +32,23 @@ This creates or updates:
   existing settings.
 - **`.gitignore`** — ensures `.harpo/` and `.env*` are ignored.
 
+## MCP tools (runtime, optional)
+
+Add `--mcp --profile <name>` to also wire Harpo's MCP server:
+
+```bash
+harpo agent setup claude --mcp --profile dev
+```
+
+This additionally writes `.mcp.json` (registering the `harpo` server as
+`harpo mcp --profile dev`), enables `policies.mcp.enabled`, and adds an "MCP
+tools" section to the managed `CLAUDE.md` block. The agent can then call the
+value-free tools `harpo_session_status`, `harpo_secret_available` and
+`harpo_exec` at runtime — receiving brokered command output, never raw secret
+values. `harpo_exec` runs only commands in `policies.proxy.exec_allowlist`
+(empty by default = denied). The deny rules stay; MCP is the safe path, the deny
+rules block the unsafe one. See [proxy / MCP mode](../specs/proxy-mcp-mode.md).
+
 ## Why deny rules, not just instructions
 
 Instructions in `CLAUDE.md` are advisory: an agent can be influenced by prompt

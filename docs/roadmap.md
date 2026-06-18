@@ -79,7 +79,12 @@ Spec: [`specs/proxy-mcp-mode.md`](specs/proxy-mcp-mode.md). Depends on M1
   capture, and `mcp.exec` / `mcp.tool.denied` audit events. The secret value
   is never returned to the agent ("use without sight").
 
-M2.3 (`agent setup --mcp`) and M2.4 (full policy + leak guards) are pending.
+- M2.3: `harpo agent setup <claude|codex> --mcp --profile <p>` wires the MCP
+  server (Claude `.mcp.json`; Codex config snippet in `AGENTS.md` since its
+  config is global), enables `policies.mcp.enabled`, and adds an "MCP tools"
+  section to the managed block — keeping the deny rules.
+
+M2.4 (full policy surface + leak guards + spec status) is pending.
 
 Deferred within M2: the loopback **API proxy** (§4b of the spec) and
 `harpo_secret_reveal` (kept disabled).

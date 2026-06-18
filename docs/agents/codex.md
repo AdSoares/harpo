@@ -32,6 +32,23 @@ directly, and prefer `workspace-write` + `on-request`. The block is delimited by
 markers, so re-running setup updates it in place. Setup also ensures the
 required `.gitignore` entries.
 
+## MCP tools (runtime, optional)
+
+`harpo agent setup codex --mcp --profile dev` enables `policies.mcp.enabled` and
+adds an "MCP tools" section to `AGENTS.md` — including the snippet to add to your
+**global** `~/.codex/config.toml` (Codex has no project-local MCP config, so
+Harpo does not auto-edit it):
+
+```toml
+[mcp_servers.harpo]
+command = "harpo"
+args = ["mcp", "--profile", "dev"]
+```
+
+Codex can then call `harpo_session_status`, `harpo_secret_available` and
+`harpo_exec` (allowlisted commands only) — receiving brokered output, never raw
+secret values. See [proxy / MCP mode](../specs/proxy-mcp-mode.md).
+
 ## One-off commands
 
 ```bash
