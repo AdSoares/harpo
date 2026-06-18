@@ -84,7 +84,15 @@ Spec: [`specs/proxy-mcp-mode.md`](specs/proxy-mcp-mode.md). Depends on M1
   config is global), enables `policies.mcp.enabled`, and adds an "MCP tools"
   section to the managed block — keeping the deny rules.
 
-M2.4 (full policy surface + leak guards + spec status) is pending.
+- M2.4: leak-guard tests prove the brokered-exec output is redacted and the
+  secret value never reaches the tool result or the audit log; the policy
+  surface (`mcp.enabled`, `proxy.exec_allowlist`) is complete; `reveal` and the
+  loopback API proxy are intentionally left unimplemented. The proxy/MCP spec is
+  marked implemented.
+
+**M2 is complete.** Remaining work is the deferred providers (Bitwarden Secrets
+Manager, AWS Secrets Manager, Infisical, Doppler) and any optional extensions
+(loopback API proxy, `policies.mcp.tools` selection).
 
 Deferred within M2: the loopback **API proxy** (§4b of the spec) and
 `harpo_secret_reveal` (kept disabled).

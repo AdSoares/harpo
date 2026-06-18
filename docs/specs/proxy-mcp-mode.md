@@ -274,10 +274,17 @@ Never record secret values, the session token, or full command output.
 
 ## 15. Rollout & relationship to the roadmap
 
-- Phase 4 in `docs/market-ready-spec.md`. Ships after the provider set and (ideally)
-  after managed unlock, since brokered exec benefits from Harpo owning the session.
-- Order: MCP server + `harpo_session_status` / `harpo_secret_available` first
-  (read-only, low risk), then `harpo_exec` (brokered), then the loopback API
-  proxy (advanced).
-- `policies.mcp.enabled` defaults to **false** initially; opt-in via
+**Status: implemented** (roadmap M2.1–M2.4). The `harpo mcp` stdio server
+exposes `harpo_session_status`, `harpo_secret_available`, `harpo_audit_tail` and
+`harpo_exec`; `harpo agent setup --mcp` wires it; `policies.mcp.enabled` (default
+false) and `policies.proxy.exec_allowlist` (empty = deny all) gate it; shell
+interpreters are always denied; output is redacted and the secret value never
+reaches the agent or the audit log (covered by leak-guard tests).
+
+Intentionally **not** implemented: `harpo_secret_reveal` (no raw-value tool
+exists) and the loopback **API proxy** (§4b) — both remain future/optional.
+
+- Phase 4 in `docs/market-ready-spec.md`. Shipped after the provider set and
+  managed unlock, since brokered exec benefits from Harpo owning the session.
+- `policies.mcp.enabled` defaults to **false**; opt-in via
   `harpo agent setup ... --mcp`.
