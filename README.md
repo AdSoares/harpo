@@ -101,6 +101,7 @@ harpo session start|status|list|revoke
 harpo run --profile <p> -- ...  Run an agent/command with secrets injected
 harpo exec --with a:ENV -- ...  Run one command with specific secrets
 harpo unlock|lock [provider]    Unlock a vault / forget its cached session (managed unlock)
+harpo mcp --profile <p>         Serve value-free tools to an agent over MCP (stdio)
 harpo env render                Write a temporary .env (balanced mode only)
 harpo audit list                Inspect the local audit log
 harpo agent setup claude|codex  Generate agent-safety config

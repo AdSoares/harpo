@@ -79,13 +79,20 @@ type Profile struct {
 
 // Policies are the local policy knobs enforced by the policy engine.
 type Policies struct {
-	AllowDotenv    bool     `yaml:"allow_dotenv"`
-	AllowReveal    bool     `yaml:"allow_reveal"`
-	ManageUnlock   bool     `yaml:"manage_unlock"`
-	UnlockCache    string   `yaml:"unlock_cache,omitempty"`     // "keychain" | "none" (default none)
-	UnlockCacheTTL Duration `yaml:"unlock_cache_ttl,omitempty"` // effective TTL is capped by max_ttl
-	DefaultTTL     Duration `yaml:"default_ttl"`
-	MaxTTL         Duration `yaml:"max_ttl"`
+	AllowDotenv    bool      `yaml:"allow_dotenv"`
+	AllowReveal    bool      `yaml:"allow_reveal"`
+	ManageUnlock   bool      `yaml:"manage_unlock"`
+	UnlockCache    string    `yaml:"unlock_cache,omitempty"`     // "keychain" | "none" (default none)
+	UnlockCacheTTL Duration  `yaml:"unlock_cache_ttl,omitempty"` // effective TTL is capped by max_ttl
+	MCP            MCPPolicy `yaml:"mcp,omitempty"`
+	DefaultTTL     Duration  `yaml:"default_ttl"`
+	MaxTTL         Duration  `yaml:"max_ttl"`
+}
+
+// MCPPolicy governs the optional MCP server. It is off by default; more knobs
+// (allowlist, reveal exposure) are added with brokered exec.
+type MCPPolicy struct {
+	Enabled bool `yaml:"enabled,omitempty"`
 }
 
 // Default returns a secure-by-default config for a new project.
