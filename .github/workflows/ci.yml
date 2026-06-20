@@ -12,7 +12,11 @@ permissions:
 jobs:
   build:
     name: build & test
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - uses: actions/checkout@v4
 
@@ -22,7 +26,9 @@ jobs:
           go-version-file: go.mod
           cache: true
 
+      # gofmt output is OS-independent; run it once (on Linux) and with bash.
       - name: Format check
+        if: runner.os == 'Linux'
         run: |
           unformatted=$(gofmt -l .)
           if [ -n "$unformatted" ]; then
