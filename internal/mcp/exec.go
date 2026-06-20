@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"os/exec"
-	"path/filepath"
 	"strings"
 
 	sdk "github.com/modelcontextprotocol/go-sdk/mcp"
@@ -150,9 +149,14 @@ func (s *Server) auditDenied(command, reason string) {
 }
 
 // commandBase normalizes a command to its base name for allowlist matching,
-// stripping any directory and a Windows executable extension.
+// stripping any directory and a Windows executable extension. It handles both
+// "/" and "\\" separators regardless of the host OS, so the allowlist cannot be
+// bypassed by using the other separator.
 func commandBase(command string) string {
-	base := strings.ToLower(filepath.Base(command))
+	base := strings.ToLower(command)
+	if i := strings.LastIndexAny(base, `/\`); i >= 0 {
+		base = base[i+1:]
+	}
 	for _, ext := range []string{".exe", ".cmd", ".bat", ".com"} {
 		base = strings.TrimSuffix(base, ext)
 	}
