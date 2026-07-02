@@ -12,7 +12,7 @@ for the full design rationale see [`mvp-spec.md`](mvp-spec.md) §7 and §15.
 
 Harpo sits between your existing vault and the AI coding agent. It resolves
 only the secrets a profile authorizes, injects them into the child process it
-launches, and records the use — without ever storing or printing the value.
+launches, and records the use - without ever storing or printing the value.
 
 ## Non-negotiable invariants
 
@@ -47,7 +47,7 @@ Being explicit here is part of the design:
   reduces *scope and lifetime*; it does not make a running agent a perfect
   sandbox.
 - **An agent with shell access can try to print variables it received.**
-  Mitigated with deny rules, sandboxing and strict mode — not eliminated.
+  Mitigated with deny rules, sandboxing and strict mode - not eliminated.
 - **A rendered `.env` is plaintext on disk.** Allowed only as an explicit,
   confirmed, TTL-bound action inside `.harpo/`.
 - **Redaction in interactive TUIs is not guaranteed.** `harpo run` wires the

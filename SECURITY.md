@@ -24,7 +24,7 @@ Being explicit here is part of the design:
   reduces *scope and lifetime*; it does not make the running agent a perfect
   sandbox.
 - **An agent with shell access may try to print variables it received.**
-  Mitigated with deny rules, sandboxing and strict mode — not eliminated.
+  Mitigated with deny rules, sandboxing and strict mode - not eliminated.
 - **A rendered `.env` is plaintext on disk.** Allowed only as an explicit,
   confirmed, TTL-bound action inside `.harpo/`.
 - **Bitwarden Password Manager has no fine-grained per-item scope in the CLI.**

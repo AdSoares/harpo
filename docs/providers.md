@@ -1,7 +1,7 @@
 # Providers
 
 A **provider** is an adapter over an existing secrets vault. Harpo never
-replaces your vault — it brokers scoped, temporary access to it. The provider
+replaces your vault - it brokers scoped, temporary access to it. The provider
 layer is pluggable so that, over time, Harpo can put access across *different*
 vaults behind one consistent workflow.
 
@@ -10,13 +10,13 @@ vaults behind one consistent workflow.
 Every adapter implements `provider.Provider`
 (`internal/provider/provider.go`):
 
-- `ID()` / `Type()` — identity and type string.
-- `Status()` — probe the CLI and report vault state (e.g. locked/unlocked).
-- `Resolve(ref)` — return the secret value for a ref/field (sensitive; never
+- `ID()` / `Type()` - identity and type string.
+- `Status()` - probe the CLI and report vault state (e.g. locked/unlocked).
+- `Resolve(ref)` - return the secret value for a ref/field (sensitive; never
   logged or printed by callers).
-- `Test(ref)` — verify a secret resolves, returning **metadata only** (length
+- `Test(ref)` - verify a secret resolves, returning **metadata only** (length
   and a partial fingerprint), never the value.
-- `Capabilities()` — declare what the provider can and cannot enforce.
+- `Capabilities()` - declare what the provider can and cannot enforce.
 
 ## Capabilities
 
@@ -35,7 +35,7 @@ logical local scoping:
 ```
 
 When `supportsScopedAccess` is `false`, the real boundary is whatever the
-unlocked vault grants in the user's context — Harpo's scope is logical, not
+unlocked vault grants in the user's context - Harpo's scope is logical, not
 enforced by the provider.
 
 ## MVP provider: Bitwarden Password Manager
@@ -70,7 +70,7 @@ Type: `keeper-commander`. Implemented by shelling out to the `keeper`
   from `keeper get <ref> --format json --unmask` and extracted by field type or
   custom label.
 - A Keeper record UID is a 22-character base64url string (e.g.
-  `rvwIBG_ban2VTH64OsnzLn`) — different from the Bitwarden UUID shape.
+  `rvwIBG_ban2VTH64OsnzLn`) - different from the Bitwarden UUID shape.
 - Never lists the vault on behalf of an agent and never writes values to stdout.
 - `supportsScopedAccess` is `false`: like a personal vault, a logged-in session
   has broad access in the user's context, so Harpo applies only logical scope.
@@ -86,12 +86,12 @@ Type: `keeper-secrets-manager`. Implemented by shelling out to the `ksm` CLI.
   uses a machine config bound to an Application.
 - Resolves the field with Keeper notation
   (`ksm secret notation keeper://<UID>/field/<field>`), which returns the raw
-  value — avoiding the masked/tabular output of `ksm secret get`. A ref that is
+  value - avoiding the masked/tabular output of `ksm secret get`. A ref that is
   not a UID is matched by title against `ksm secret list --json` and
   disambiguated (unique exact title match, else a value-free "use the UID" error).
 - A KSM record UID is the same 22-character base64url shape as other Keeper UIDs.
 - Never lists the vault on behalf of an agent and never writes values to stdout.
-- **`supportsScopedAccess` is `true`** — unlike Keeper Commander, a KSM
+- **`supportsScopedAccess` is `true`** - unlike Keeper Commander, a KSM
   Application is bound to specific shared folders, so the access Harpo brokers
   is genuinely scoped (least privilege), not just logical scope. This makes KSM
   the recommended Keeper surface for agent-safe, machine-to-machine use.
@@ -109,7 +109,7 @@ Type: `1password`. Implemented by shelling out to the `op` CLI (v2).
 - Never lists the vault on behalf of an agent and never writes values to stdout.
 - `supportsScopedAccess` is `false` by default: a regular `op signin` grants
   broad access across the user's vaults, so Harpo applies only logical scope. A
-  1Password **service account** scoped to specific vaults provides real scope —
+  1Password **service account** scoped to specific vaults provides real scope -
   an operational choice that the adapter reports conservatively as unscoped.
 
 ## Provider: HashiCorp Vault
@@ -124,7 +124,7 @@ Type: `hashicorp-vault`. Implemented by shelling out to the `vault` CLI.
   auto-detects KV v1/v2. The harpo `ref` is the KV path (e.g. `secret/myapp`)
   and the field is the key within it.
 - Never lists the vault on behalf of an agent and never writes values to stdout.
-- **`supportsScopedAccess` is `true`** — access is governed by the token's
+- **`supportsScopedAccess` is `true`** - access is governed by the token's
   policies and enforced server-side per path, so the scope is real, not merely
   logical. (A root token is broad; scope reflects the token you use.)
 - The MVP adapter brokers static KV reads; Vault's native dynamic secrets,

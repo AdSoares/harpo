@@ -32,7 +32,7 @@ This is the threat-by-threat breakdown for the Harpo MVP. It mirrors
 | Limitation | Note |
 |---|---|
 | Env vars can be read by the child process itself | Harpo reduces scope, but env vars are plaintext inside the process |
-| An agent with shell access may print variables it received | Mitigated with permissions, instructions, deny rules and strict mode — not absolute |
+| An agent with shell access may print variables it received | Mitigated with permissions, instructions, deny rules and strict mode - not absolute |
 | A temporary `.env` is plaintext on disk | Allowed only in an explicit mode, with a warning, TTL, and safe path |
 | Bitwarden Password Manager has no fine-grained per-item scope in the CLI | Harpo applies logical scope; for strong scope, use a Secrets Manager provider in the future |
 | Redaction in an interactive TUI may be unreliable | The MVP does not promise full redaction for `harpo run -- claude` |

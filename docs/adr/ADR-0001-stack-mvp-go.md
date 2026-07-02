@@ -1,15 +1,15 @@
-# ADR-0001 — MVP language: Go
+# ADR-0001 - MVP language: Go
 
 **Status:** Accepted
 **Date:** 2026-06-16
 **Decider:** Ad Soares
-**Product context:** Harpo — a local secret broker for AI coding agents (see `docs/mvp-spec.md`)
+**Product context:** Harpo - a local secret broker for AI coding agents (see `docs/mvp-spec.md`)
 
 ---
 
 ## Context
 
-The MVP spec (§14.2) recommended .NET 10/8 and listed Go and Rust as strong alternatives, without locking the choice. Because the language is a hard-to-reverse decision (a near one-way door) and the Runner — the core of the product — relies heavily on spawning a child process with a controlled environment, the choice had to be settled before any scaffolding.
+The MVP spec (§14.2) recommended .NET 10/8 and listed Go and Rust as strong alternatives, without locking the choice. Because the language is a hard-to-reverse decision (a near one-way door) and the Runner - the core of the product - relies heavily on spawning a child process with a controlled environment, the choice had to be settled before any scaffolding.
 
 The central discussion was **Go vs Rust**, given that Harpo operates in the security domain.
 
@@ -24,7 +24,7 @@ The central discussion was **Go vs Rust**, given that Harpo operates in the secu
 - **Against:** real learning curve (not part of the founder's current stack), more verbose `exec`/env handling, less mature cloud SDKs for future providers, slower delivery.
 
 ### Go (chosen)
-- **For:** idiomatic `os/exec` + environment handling — exactly the heart of the Runner (resolve secrets, filter the environment, strip `BW_SESSION`, inject only what is authorized); trivial cross-compilation and single binary; mature cloud SDKs for the phase-3 providers; already part of the founder's stack; fast MVP delivery.
+- **For:** idiomatic `os/exec` + environment handling - exactly the heart of the Runner (resolve secrets, filter the environment, strip `BW_SESSION`, inject only what is authorized); trivial cross-compilation and single binary; mature cloud SDKs for the phase-3 providers; already part of the founder's stack; fast MVP delivery.
 - **Against:** GC makes in-memory secret zeroization fragile; "security tool" perception slightly below Rust.
 
 ### .NET (the spec's original recommendation)
@@ -45,4 +45,4 @@ The central discussion was **Go vs Rust**, given that Harpo operates in the secu
 
 ## Future reevaluation
 
-Rust is **not rejected**. If security positioning becomes the product's competitive axis ("Security model" page, public auditing, enterprise audience), rewriting the core in Rust becomes justifiable — with `secrecy`/`zeroize` becoming part of the product narrative. Trigger: real traction + security as a market-required differentiator. Not before there is a user.
+Rust is **not rejected**. If security positioning becomes the product's competitive axis ("Security model" page, public auditing, enterprise audience), rewriting the core in Rust becomes justifiable - with `secrecy`/`zeroize` becoming part of the product narrative. Trigger: real traction + security as a market-required differentiator. Not before there is a user.

@@ -1,4 +1,4 @@
-# Harpo — Near-term Roadmap
+# Harpo - Near-term Roadmap
 
 **Date:** 2026-06-17
 **Scope:** sequences the two designed features (managed unlock, proxy / MCP mode)
@@ -26,7 +26,7 @@ M1  Managed unlock  ──▶  M2  Proxy / MCP mode  ──▶  (later) remainin
 
 Both features ship **off by default** (opt-in), so existing flows are unchanged.
 
-## M1 — Managed unlock
+## M1 - Managed unlock
 
 Spec: [`specs/managed-unlock.md`](specs/managed-unlock.md). Reference provider:
 Bitwarden Password Manager.
@@ -56,14 +56,14 @@ Risk/size: medium. Main risks: master-secret custody (secure prompt + stdin,
 never args/env/logs) and Go GC zeroization limits (see
 [`adr/ADR-0001-stack-mvp-go.md`](adr/ADR-0001-stack-mvp-go.md)).
 
-## M2 — Proxy / MCP mode
+## M2 - Proxy / MCP mode
 
 Spec: [`specs/proxy-mcp-mode.md`](specs/proxy-mcp-mode.md). Depends on M1
-(session ownership) — softly; read-only tools (M2.1) can land before M1b.
+(session ownership) - softly; read-only tools (M2.1) can land before M1b.
 
 | Step | Description | Notes |
 |---|---|---|
-| M2.1 | MCP server skeleton over stdio + read-only tools: `harpo_session_status`, `harpo_secret_available`, `harpo_audit_tail` | **decision point:** Go MCP library choice; no value path — low risk |
+| M2.1 | MCP server skeleton over stdio + read-only tools: `harpo_session_status`, `harpo_secret_available`, `harpo_audit_tail` | **decision point:** Go MCP library choice; no value path - low risk |
 | M2.2 | `harpo_exec` brokered exec: allowlist + shell-wrapper denial + alias authorization; reuse `runner.RunWith` + `redact.Writer` + `audit` | the key tool; value never returned |
 | M2.3 | `harpo agent setup ... --mcp`: write `.mcp.json` (Claude) / Codex MCP config; keep deny rules; update the managed `CLAUDE.md`/`AGENTS.md` block + skill | safe path alongside the existing guardrail |
 | M2.4 | `harpo.yml` policy (`policies.mcp`, `policies.proxy`); audit events; leak guards | `mcp.enabled` defaults false; `reveal` stays off |
@@ -73,7 +73,7 @@ Spec: [`specs/proxy-mcp-mode.md`](specs/proxy-mcp-mode.md). Depends on M1
   (`github.com/modelcontextprotocol/go-sdk`) exposing the read-only,
   value-free tools `harpo_session_status`, `harpo_secret_available` and
   `harpo_audit_tail`, gated by `policies.mcp.enabled` (default false).
-- M2.2: the `harpo_exec` brokered-exec tool — `policies.proxy.exec_allowlist`
+- M2.2: the `harpo_exec` brokered-exec tool - `policies.proxy.exec_allowlist`
   (empty denies all), shell-interpreter denial, profile-scoped alias
   authorization, secret resolution reusing provider/unlock, redacted output
   capture, and `mcp.exec` / `mcp.tool.denied` audit events. The secret value
@@ -82,7 +82,7 @@ Spec: [`specs/proxy-mcp-mode.md`](specs/proxy-mcp-mode.md). Depends on M1
 - M2.3: `harpo agent setup <claude|codex> --mcp --profile <p>` wires the MCP
   server (Claude `.mcp.json`; Codex config snippet in `AGENTS.md` since its
   config is global), enables `policies.mcp.enabled`, and adds an "MCP tools"
-  section to the managed block — keeping the deny rules.
+  section to the managed block - keeping the deny rules.
 
 - M2.4: leak-guard tests prove the brokered-exec output is redacted and the
   secret value never reaches the tool result or the audit log; the policy
@@ -101,7 +101,7 @@ Risk/size: medium–large. Main risks: brokered-command exfiltration (mitigated 
 allowlist + no shell wrappers + optional human approval) and the new local
 surface (stdio, no socket).
 
-## Deferred — remaining providers
+## Deferred - remaining providers
 
 After M1/M2. Each follows the established adapter pattern (new package +
 factory + docs; env denylist/deny rules as needed) and is small/mechanical:

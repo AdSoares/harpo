@@ -1,6 +1,6 @@
 # Contributing to Harpo
 
-Thanks for your interest in Harpo — a local secret broker for AI coding agents.
+Thanks for your interest in Harpo - a local secret broker for AI coding agents.
 Contributions of all kinds are welcome: bug reports, fixes, new providers,
 docs, and tests.
 
@@ -47,14 +47,14 @@ clean before opening a PR. CI runs the same checks (see
 
 The CLI is a single Go module. Core logic lives under `internal/`:
 
-- `config` — `harpo.yml` types and loading.
-- `provider` (+ `provider/bitwarden`) — the vault abstraction and adapters.
-- `policy` — security-mode invariants (TTL, reveal, dotenv, authorization).
-- `session` — metadata-only session grants.
-- `runner` — building the child-process environment.
-- `audit` — JSONL audit logging.
-- `redact` — masking of secret values and token formats.
-- `cli` — the cobra command tree.
+- `config` - `harpo.yml` types and loading.
+- `provider` (+ `provider/bitwarden`) - the vault abstraction and adapters.
+- `policy` - security-mode invariants (TTL, reveal, dotenv, authorization).
+- `session` - metadata-only session grants.
+- `runner` - building the child-process environment.
+- `audit` - JSONL audit logging.
+- `redact` - masking of secret values and token formats.
+- `cli` - the cobra command tree.
 
 See [`CLAUDE.md`](CLAUDE.md) for the bigger-picture architecture.
 
@@ -80,7 +80,7 @@ Providers are the main extension point. To add one:
 
 1. Implement the `provider.Provider` interface (`internal/provider/provider.go`):
    `ID`, `Type`, `Status`, `Resolve`, `Test`, and `Capabilities`.
-2. Declare honest `Capabilities` — in particular, set `SupportsScopedAccess`
+2. Declare honest `Capabilities` - in particular, set `SupportsScopedAccess`
    to `false` when access is only logically scoped, so Harpo can warn the user.
 3. Never list the vault on behalf of an agent and never write secret values to
    stdout/stderr or logs.

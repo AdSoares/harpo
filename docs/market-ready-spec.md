@@ -1,4 +1,4 @@
-# Harpo — Market-Ready Specification
+# Harpo - Market-Ready Specification
 
 **Status:** Draft v0.1  
 **Date:** 2026-06-16  
@@ -403,7 +403,7 @@ Example:
 
 ## 8.5 Delivery modes
 
-### 8.5.1 `run` — recommended mode
+### 8.5.1 `run` - recommended mode
 
 ```bash
 harpo run --profile graces-dev -- claude
@@ -411,19 +411,19 @@ harpo run --profile graces-dev -- claude
 
 Harpo starts the child process and controls the environment.
 
-### 8.5.2 `exec` — one-off command
+### 8.5.2 `exec` - one-off command
 
 ```bash
 harpo exec --with gitlab.ad.read:GITLAB_TOKEN -- glab repo list
 ```
 
-### 8.5.3 `env render` — compatibility
+### 8.5.3 `env render` - compatibility
 
 ```bash
 harpo env render --profile graces-dev --out .harpo/.env.session --ttl 30m
 ```
 
-### 8.5.4 `proxy` — advanced version
+### 8.5.4 `proxy` - advanced version
 
 Instead of delivering the token to the process, Harpo can act as a local proxy:
 
@@ -445,7 +445,7 @@ http://127.0.0.1:<port>/gitlab/projects
 
 In this mode, the token never enters the agent's environment.
 
-### 8.5.5 `fd/stdin` — advanced version
+### 8.5.5 `fd/stdin` - advanced version
 
 For compatible tools:
 
@@ -668,14 +668,14 @@ The enterprise version can export to:
 
 ### 9.2 Security by level
 
-#### Level 1 — Solo Developer
+#### Level 1 - Solo Developer
 
 - personal provider;
 - local policy;
 - local audit;
 - `run`, `exec`, temporary `.env`.
 
-#### Level 2 — Team
+#### Level 2 - Team
 
 - shareable profiles;
 - policy-as-code;
@@ -684,7 +684,7 @@ The enterprise version can export to:
 - pre-commit scanning;
 - approval per environment.
 
-#### Level 3 — Enterprise
+#### Level 3 - Enterprise
 
 - SSO;
 - RBAC;
@@ -943,7 +943,7 @@ Developers grant scoped, temporary, auditable access to secrets through Harpo.
 Title:
 
 ```text
-Harpo — Agent-safe secrets for AI coding workflows
+Harpo - Agent-safe secrets for AI coding workflows
 ```
 
 Subtitle:
@@ -1021,7 +1021,7 @@ Document:
 
 ## 17. Market roadmap
 
-### Phase 1 — Open source MVP
+### Phase 1 - Open source MVP
 
 Goal: prove value for the solo dev.
 
@@ -1034,7 +1034,7 @@ Goal: prove value for the solo dev.
 - local audit.
 - strong docs.
 
-### Phase 2 — Developer adoption
+### Phase 2 - Developer adoption
 
 Goal: community adoption.
 
@@ -1047,7 +1047,7 @@ Goal: community adoption.
 - simple website.
 - short videos.
 
-### Phase 3 — Team-ready
+### Phase 3 - Team-ready
 
 Goal: small teams.
 
@@ -1059,7 +1059,7 @@ Goal: small teams.
 - pre-commit hooks;
 - `harpo.yml` templates per stack.
 
-### Phase 4 — Agent-native platform
+### Phase 4 - Agent-native platform
 
 Goal: relevance in security for agents.
 
@@ -1071,7 +1071,7 @@ Goal: relevance in security for agents.
 - advanced Claude/Codex integration;
 - plugin SDK.
 
-### Phase 5 — Enterprise/commercial
+### Phase 5 - Enterprise/commercial
 
 Goal: monetization.
 
@@ -1240,7 +1240,7 @@ Paid:
 
 ## 24. Stack choice for the market
 
-### Option A — Go
+### Option A - Go
 
 Advantages:
 
@@ -1250,7 +1250,7 @@ Advantages:
 - good performance;
 - strong adoption in DevOps.
 
-### Option B — Rust
+### Option B - Rust
 
 Advantages:
 
@@ -1259,7 +1259,7 @@ Advantages:
 - fine-grained control;
 - good image for a security tool.
 
-### Option C — .NET
+### Option C - .NET
 
 Advantages:
 

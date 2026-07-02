@@ -46,27 +46,27 @@ policies:
 
 How they are enforced:
 
-- **TTL** — in strict mode a TTL is required; in any mode it must not exceed
+- **TTL** - in strict mode a TTL is required; in any mode it must not exceed
   `max_ttl`. When omitted in a non-strict context, `default_ttl` applies.
-- **`allow_reveal`** — `reveal` is always denied in strict mode, regardless of
+- **`allow_reveal`** - `reveal` is always denied in strict mode, regardless of
   this flag; in other modes it additionally requires `allow_reveal: true`.
-- **`allow_dotenv`** — `.env` rendering is always denied in strict mode; in
+- **`allow_dotenv`** - `.env` rendering is always denied in strict mode; in
   other modes it additionally requires `allow_dotenv: true`, and the file may
   only be written inside `.harpo/`.
-- **`manage_unlock`** — when `true`, an unlock-capable provider (e.g. Bitwarden)
+- **`manage_unlock`** - when `true`, an unlock-capable provider (e.g. Bitwarden)
   that reports `locked` is unlocked in-process: Harpo prompts for the master
   password (no echo) only when a terminal is available, holds the session in
   memory, and never exports it to the shell or the agent. Defaults to `false`
   (you unlock the vault yourself).
-- **`unlock_cache` / `unlock_cache_ttl`** — when `unlock_cache: keychain`, the
+- **`unlock_cache` / `unlock_cache_ttl`** - when `unlock_cache: keychain`, the
   unlocked session is cached in the **OS keychain** with a TTL (default 15m,
   capped by `max_ttl`), so `harpo run` reuses it across runs without
-  re-prompting. Only the session token is cached — never the master password.
+  re-prompting. Only the session token is cached - never the master password.
   `harpo unlock` populates the cache; `harpo lock` evicts it. Defaults to
   `none`. See [`specs/managed-unlock.md`](specs/managed-unlock.md).
-- **`mcp.enabled`** — when `true`, `harpo mcp` serves value-free tools to an
+- **`mcp.enabled`** - when `true`, `harpo mcp` serves value-free tools to an
   agent over MCP (stdio). Defaults to `false`.
-- **`proxy.exec_allowlist`** — the commands the `harpo_exec` MCP tool may run
+- **`proxy.exec_allowlist`** - the commands the `harpo_exec` MCP tool may run
   (matched on the base name). An **empty list denies every command**, so
   brokered exec is opt-in per command. Shell interpreters (`bash`, `sh`,
   `python`, `node`, …) are **always denied**, even if listed. The secret value
@@ -75,7 +75,7 @@ How they are enforced:
 
 ## Advisory warnings
 
-Beyond hard rules, Harpo surfaces non-blocking warnings — for example, when a
+Beyond hard rules, Harpo surfaces non-blocking warnings - for example, when a
 secret alias looks production-like (`prod`, `production`, `root`, `admin`),
 prompting you to double-check before granting it to an agent.
 

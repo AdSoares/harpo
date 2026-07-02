@@ -1,8 +1,8 @@
-# Harpo — Managed Unlock Specification
+# Harpo - Managed Unlock Specification
 
 **Status:** Draft v0.1
 **Date:** 2026-06-16
-**Type:** Feature spec — Harpo manages the vault unlock instead of relying on a user-run unlock
+**Type:** Feature spec - Harpo manages the vault unlock instead of relying on a user-run unlock
 
 ---
 
@@ -16,7 +16,7 @@ provider itself, holds the resulting session **in process memory** (optionally
 cached in the **OS keychain** with a TTL), uses it only for its own resolution
 calls, and never lets it touch the user's shell or the child agent.
 
-This is a UX improvement and a **security improvement** — it removes the
+This is a UX improvement and a **security improvement** - it removes the
 long-lived `BW_SESSION` from the shell, shrinking the exposure window that
 exists today.
 
@@ -32,7 +32,7 @@ harpo run --profile dev -- claude      # Harpo inherits BW_SESSION, strips it fr
 Problems:
 
 - `BW_SESSION` lives in the **shell** for the whole session; any process the
-  user launches there can read it — including `claude` if run directly (without
+  user launches there can read it - including `claude` if run directly (without
   `harpo run`), which would then inherit a live vault session.
 - The unlock UX is provider-specific and outside Harpo, so Harpo can't guide it
   or enforce policy on it.
@@ -57,12 +57,12 @@ the trust surface small. This spec adds it as a post-MVP capability.
   already-registered account.
 - 1Password desktop-app / biometric integration internals.
 - Persisting the master secret anywhere, ever.
-- Replacing the existing ambient-session behavior — it remains a fallback.
+- Replacing the existing ambient-session behavior - it remains a fallback.
 
 ## 4. Principles
 
 1. **Secure by default.** The master secret is read via a no-echo prompt and
-   passed to the provider CLI over **stdin** — never as a command-line argument
+   passed to the provider CLI over **stdin** - never as a command-line argument
    (process listing / shell history leak) and never as a lingering env var.
 2. **Session in memory; never plaintext on disk.** The session token lives in
    Harpo's process memory. The only persistence allowed is the **OS keychain**,
@@ -84,7 +84,7 @@ the trust surface small. This spec adds it as a post-MVP capability.
 | Bitwarden Password Manager (`bw`) | ✅ | `bw unlock --raw` via stdin → `BW_SESSION` |
 | Keeper Commander (`keeper`) | ◑ | persistent-login / master password; provider-dependent |
 | 1Password (`op`) | ✕ (delegated) | relies on desktop app / biometric / service-account token |
-| HashiCorp Vault (`vault`) | ✕ (login, not unlock) | `vault login` / token — different model |
+| HashiCorp Vault (`vault`) | ✕ (login, not unlock) | `vault login` / token - different model |
 | Keeper Secrets Manager (`ksm`) | ✕ (no concept) | machine config; always "ready" |
 
 Bitwarden Password Manager is the reference implementation.
@@ -93,7 +93,7 @@ Bitwarden Password Manager is the reference implementation.
 
 Add an **optional** capability and interface in `internal/provider`:
 
-- `Capabilities.SupportsUnlock bool` — advertised per provider so the CLI knows
+- `Capabilities.SupportsUnlock bool` - advertised per provider so the CLI knows
   whether to offer unlock.
 - A new optional interface implemented only by unlock-capable providers:
 
@@ -116,7 +116,7 @@ type Session struct {
 ```
 
 The provider stores the active session internally and includes `Name=Value` in
-the environment of its own `Resolve`/`Test`/list subprocesses — replacing
+the environment of its own `Resolve`/`Test`/list subprocesses - replacing
 today's reliance on an ambient `BW_SESSION`.
 
 ### Session resolution order (per `Resolve`/`Status`)
@@ -145,10 +145,10 @@ today's reliance on an ambient `BW_SESSION`.
 - Backed by the OS keychain (Windows Credential Manager, macOS Keychain, Linux
   Secret Service). Candidate library: `github.com/zalando/go-keyring`
   (cross-platform). This would be the first runtime dependency beyond
-  cobra/yaml/charm — a deliberate tradeoff to be confirmed at implementation.
+  cobra/yaml/charm - a deliberate tradeoff to be confirmed at implementation.
 - Cache key: `harpo/<provider-id>` (+ account where applicable). Stored value:
   the session token plus an expiry timestamp.
-- **Never** cache the master secret — only the resulting session token.
+- **Never** cache the master secret - only the resulting session token.
 - TTL governed by policy (`unlock_cache_ttl`), capped by `max_ttl`. On expiry,
   the entry is removed and a re-prompt is required.
 - `harpo lock` (or `harpo unlock --forget`) removes the cached session.

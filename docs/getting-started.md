@@ -6,7 +6,7 @@ agent-safe secret session. For the full design, see [`mvp-spec.md`](mvp-spec.md)
 ## Prerequisites
 
 - **Go 1.26+** (to build from source; the toolchain version is pinned in `go.mod`).
-- The **Bitwarden CLI** (`bw`) installed and logged in — the MVP's only provider.
+- The **Bitwarden CLI** (`bw`) installed and logged in - the MVP's only provider.
 
 ## Install
 
@@ -96,7 +96,7 @@ harpo audit list         # see what was used, when (never the values)
 
 ## Next steps
 
-- [Security model](security-model.md) — what Harpo protects and what it does not.
-- [Policies](policies.md) — modes, TTLs and the `harpo.yml` policy knobs.
-- [Providers](providers.md) — the vault abstraction and what is planned.
+- [Security model](security-model.md) - what Harpo protects and what it does not.
+- [Policies](policies.md) - modes, TTLs and the `harpo.yml` policy knobs.
+- [Providers](providers.md) - the vault abstraction and what is planned.
 - Agents: [Claude Code](agents/claude-code.md), [Codex](agents/codex.md).

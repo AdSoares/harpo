@@ -1,4 +1,4 @@
-# Harpo — MVP Specification
+# Harpo - MVP Specification
 
 **Status:** Draft v0.1  
 **Date:** 2026-06-16  

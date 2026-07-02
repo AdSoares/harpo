@@ -1,8 +1,8 @@
-# Harpo — Proxy / MCP Mode Specification
+# Harpo - Proxy / MCP Mode Specification
 
 **Status:** Draft v0.1
 **Date:** 2026-06-16
-**Type:** Feature spec — let an agent interact with Harpo at runtime without secrets entering the agent's context
+**Type:** Feature spec - let an agent interact with Harpo at runtime without secrets entering the agent's context
 
 ---
 
@@ -14,12 +14,12 @@ to the already-running agent (process env is immutable), so you must restart.
 
 **Proxy / MCP mode** lets the agent talk to Harpo **at runtime** through a small
 set of **value-free tools**. The agent can discover what credentials exist and,
-crucially, ask Harpo to **run a command with a credential injected** — receiving
+crucially, ask Harpo to **run a command with a credential injected** - receiving
 only the (redacted) result. The secret value never enters the agent's
 environment, prompt, or transcript.
 
 The defining property is **use without sight**: the agent can *use* a credential
-to get work done but never *possesses* the value — so it cannot paste it into a
+to get work done but never *possesses* the value - so it cannot paste it into a
 prompt, commit it, or be prompt-injected into exfiltrating a value it never has.
 
 ## 2. Context & problem
@@ -29,7 +29,7 @@ From the env-var model:
 - New/rotated secret mid-session ⇒ restart `harpo run`, or fall back to per-call
   `harpo exec` in a separate shell.
 - Any path where the agent *reads* the value (e.g. `eval $(harpo export ...)`)
-  puts the secret into the agent's context — the exact leak Harpo prevents.
+  puts the secret into the agent's context - the exact leak Harpo prevents.
 
 Proxy / MCP mode removes the restart friction while keeping the value out of the
 agent. It is the runtime, agent-driven complement to `harpo run`.
@@ -39,14 +39,14 @@ This realizes the roadmap items "MCP server" (`docs/market-ready-spec.md` §8.7)
 
 ## 3. Core principle
 
-> Tools return **metadata** and **brokered results** — never raw secret values.
+> Tools return **metadata** and **brokered results** - never raw secret values.
 
 - No tool returns a secret value by default. `reveal` is **disabled** by default
   (allowed only in `balanced`/`convenient` modes with explicit policy + strong
   confirmation, never to the model silently).
 - The MCP/proxy server runs inside Harpo's process boundary; it uses the
   resolved secrets internally and strips them from anything it returns.
-- The agent still must not run vault CLIs or read `.env` directly — the existing
+- The agent still must not run vault CLIs or read `.env` directly - the existing
   deny rules remain the guardrail. MCP/proxy is the **safe path**; deny rules
   block the **unsafe path**. They are complementary.
 
@@ -68,7 +68,7 @@ current session/profile and never exposes the session token.
 
 For tools/agents that are not MCP-aware. Two flavors:
 
-- **Brokered subcommand:** the agent runs `harpo exec ...` (already exists) — a
+- **Brokered subcommand:** the agent runs `harpo exec ...` (already exists) - a
   per-command broker that injects the secret into the child only.
 - **Loopback API proxy (advanced):** `harpo proxy start --profile gitlab-dev`
   binds `127.0.0.1:<port>` and proxies specific upstream API calls with auth
@@ -93,17 +93,17 @@ secret value.
 ### `harpo_secret_available`
 
 - **Input:** `{ tag?: string }` (optional filter).
-- **Output:** `[{ alias, destination, tags }]` — the aliases the current profile
+- **Output:** `[{ alias, destination, tags }]` - the aliases the current profile
   authorizes. **No values.**
 - Lets the agent discover what it may use without guessing env var names.
 
-### `harpo_exec` — the brokered exec (key tool)
+### `harpo_exec` - the brokered exec (key tool)
 
 - **Input:** `{ command: string, args: string[], with: [{ alias, env }] }`.
 - **Behavior:** Harpo validates (see §6), resolves the secret(s) internally,
   runs `command args...` with the secret(s) injected into *that child's* env
   (vault session vars stripped), captures output through the redactor, audits.
-- **Output:** `{ exit_code, stdout, stderr, truncated }` — stdout/stderr are
+- **Output:** `{ exit_code, stdout, stderr, truncated }` - stdout/stderr are
   **redacted** (known values + token formats). The secret value is never
   returned.
 
@@ -112,7 +112,7 @@ secret value.
 - **Input:** `{ limit?: number }`.
 - **Output:** recent audit events (no values). Read-only visibility.
 
-### `harpo_secret_reveal` — **disabled by default**
+### `harpo_secret_reveal` - **disabled by default**
 
 - Returns a raw value. **Not registered** unless `policies.mcp.expose_reveal`
   is true (only in non-strict modes), and even then gated by confirmation. This
@@ -282,7 +282,7 @@ interpreters are always denied; output is redacted and the secret value never
 reaches the agent or the audit log (covered by leak-guard tests).
 
 Intentionally **not** implemented: `harpo_secret_reveal` (no raw-value tool
-exists) and the loopback **API proxy** (§4b) — both remain future/optional.
+exists) and the loopback **API proxy** (§4b) - both remain future/optional.
 
 - Phase 4 in `docs/market-ready-spec.md`. Shipped after the provider set and
   managed unlock, since brokered exec benefits from Harpo owning the session.
