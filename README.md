@@ -35,6 +35,38 @@ If you keep a company vault and a separate personal vault for side projects,
 Harpo gives your agents one standard way to use both — same scoping, same TTLs,
 same audit — instead of a different mechanism per vault.
 
+## How it works
+
+A single `harpo run` brokers one authorized secret into the agent's
+environment — the agent never touches the vault or the vault session token.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Dev as Developer
+    participant Vault
+    participant Harpo
+    participant Agent
+
+    Dev->>Vault: unlock the vault (e.g. bw unlock)
+    Note over Dev,Vault: the vault session token stays in your shell
+    Dev->>Harpo: harpo run --profile dev -- claude
+    activate Harpo
+    Harpo->>Harpo: Policy Engine — mode, TTL, project, is the secret authorized?
+    Harpo->>Harpo: Session Manager — open time-bound grant (metadata only)
+    Harpo->>Vault: Provider Adapter — read one authorized field
+    Vault-->>Harpo: secret value (held briefly, never logged or stored)
+    Harpo->>Harpo: Runner — strip BW_SESSION, inject only authorized env vars
+    Harpo->>Harpo: Audit Logger — record what / when / which (never the value)
+    Harpo->>Agent: spawn with the filtered environment
+    activate Agent
+    Note over Agent: sees only GITLAB_TOKEN — never the vault or its session token
+    Agent-->>Harpo: exit
+    deactivate Agent
+    Harpo->>Harpo: end session on TTL / exit, close audit
+    deactivate Harpo
+```
+
 ## Use cases
 
 - Grant a GitLab token to the current project only.
@@ -106,6 +138,60 @@ harpo env render                Write a temporary .env (balanced mode only)
 harpo audit list                Inspect the local audit log
 harpo agent setup claude|codex  Generate agent-safety config
 ```
+
+## Architecture
+
+Harpo is a set of local components with a strictly one-directional flow toward
+the vault and back into a controlled child-process environment. Config
+(`harpo.yml`) is versionable and secret-free; the vault stays the source of
+truth; the agent only ever receives an injected env var.
+
+```mermaid
+flowchart TD
+    Dev([Developer]) -->|"harpo run / exec / env"| CLI
+
+    subgraph HARPO["Harpo — local secret broker"]
+        direction TB
+        CLI["CLI Core<br/>parse · UX · validate"]
+        POL["Policy Engine<br/>mode · TTL · project · authorization"]
+        SES["Session Manager<br/>time-bound grants — metadata only, never values"]
+        PROV["Provider Adapter<br/>bw · op · vault · keeper · ksm"]
+        RUN["Runner<br/>strip BW_SESSION · inject only authorized env"]
+        ENV["Env Renderer<br/>.harpo/.env.session · TTL · gitignored"]
+        MCP["MCP Server<br/>value-free tools over stdio"]
+        AUD[("Audit Logger<br/>JSONL · never the value")]
+        RED["Redactor<br/>mask known secrets in output"]
+
+        CLI --> POL --> SES --> PROV
+        SES --> RUN & ENV & MCP
+        RUN -. audit .-> AUD
+        ENV -. audit .-> AUD
+        MCP -. audit .-> AUD
+        RUN --> RED
+    end
+
+    PROV -->|"read one authorized field"| VAULT[("Existing vault<br/>source of truth")]
+    RUN -->|"spawn with filtered env"| AGENT([AI agent / child process])
+    MCP -->|"value-free tools"| AGENT
+    ENV -->|"writes"| EFILE[[".harpo/.env.session"]]
+
+    classDef ext fill:#e3f2fd,stroke:#1565c0,color:#0d47a1;
+    classDef danger fill:#fdecea,stroke:#c62828,color:#b71c1c;
+    class VAULT ext
+    class AGENT danger
+```
+
+| Component | Responsibility |
+|---|---|
+| **CLI Core** | Command parsing, interactive UX, validation, error messages. |
+| **Policy Engine** | Enforces mode, TTL, project path, allowed destinations, and whether the requested secret is authorized. |
+| **Session Manager** | Creates time-bound grants; stores **metadata only**, never secret values. |
+| **Provider Adapter** | Pluggable vault interface (`bw`, `op`, `vault`, `keeper`, `ksm`); reads one authorized field, never lists the vault for the agent. |
+| **Runner** | Primary delivery path: strips inherited `BW_SESSION`, injects only authorized vars, spawns the agent. |
+| **Env Renderer** | Opt-in `.env` materialization under gitignored `.harpo/`, with a TTL (balanced mode). |
+| **MCP Server** | Serves value-free tools to an agent over stdio, so the value never enters its environment. |
+| **Audit Logger** | Appends JSONL events (what / when / which) — **never the value**. |
+| **Redactor** | Masks known secret formats in `harpo exec` output and Harpo's own errors. |
 
 ## Security model (summary)
 
