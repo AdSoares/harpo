@@ -7,7 +7,7 @@
 **A local secret broker for AI coding agents.**
 
 Harpo lets developers grant Claude Code, Codex and other coding agents
-**temporary, scoped, auditable** access to credentials from existing vaults —
+**temporary, scoped, auditable** access to credentials from existing vaults -
 without pasting tokens into prompts, committing `.env` files, or giving the
 agent direct access to the vault.
 
@@ -18,7 +18,7 @@ agent direct access to the vault.
 
 AI coding agents can run commands, edit files and call developer tools. But
 real work often needs credentials. Pasting secrets into prompts or storing them
-in plaintext `.env` files is risky — they leak into history, transcripts,
+in plaintext `.env` files is risky - they leak into history, transcripts,
 logs, screenshots and Git.
 
 Harpo keeps your vault as the source of truth and hands agents only the secrets
@@ -27,18 +27,18 @@ without ever storing the value.
 
 ## Why Harpo, not just my vault?
 
-Some vaults already offer — or will soon offer — agent-oriented access
+Some vaults already offer - or will soon offer - agent-oriented access
 features. Harpo stays useful and distinct because it is **vault-agnostic**:
 it brings access across *different* vaults into one consistent workflow.
 
 If you keep a company vault and a separate personal vault for side projects,
-Harpo gives your agents one standard way to use both — same scoping, same TTLs,
-same audit — instead of a different mechanism per vault.
+Harpo gives your agents one standard way to use both - same scoping, same TTLs,
+same audit - instead of a different mechanism per vault.
 
 ## How it works
 
 A single `harpo run` brokers one authorized secret into the agent's
-environment — the agent never touches the vault or the vault session token.
+environment - the agent never touches the vault or the vault session token.
 
 ```mermaid
 sequenceDiagram
@@ -52,15 +52,15 @@ sequenceDiagram
     Note over Dev,Vault: the vault session token stays in your shell
     Dev->>Harpo: harpo run --profile dev -- claude
     activate Harpo
-    Harpo->>Harpo: Policy Engine — mode, TTL, project, is the secret authorized?
-    Harpo->>Harpo: Session Manager — open time-bound grant (metadata only)
-    Harpo->>Vault: Provider Adapter — read one authorized field
+    Harpo->>Harpo: Policy Engine - mode, TTL, project, is the secret authorized?
+    Harpo->>Harpo: Session Manager - open time-bound grant (metadata only)
+    Harpo->>Vault: Provider Adapter - read one authorized field
     Vault-->>Harpo: secret value (held briefly, never logged or stored)
-    Harpo->>Harpo: Runner — strip BW_SESSION, inject only authorized env vars
-    Harpo->>Harpo: Audit Logger — record what / when / which (never the value)
+    Harpo->>Harpo: Runner - strip BW_SESSION, inject only authorized env vars
+    Harpo->>Harpo: Audit Logger - record what / when / which (never the value)
     Harpo->>Agent: spawn with the filtered environment
     activate Agent
-    Note over Agent: sees only GITLAB_TOKEN — never the vault or its session token
+    Note over Agent: sees only GITLAB_TOKEN - never the vault or its session token
     Agent-->>Harpo: exit
     deactivate Agent
     Harpo->>Harpo: end session on TTL / exit, close audit
@@ -72,7 +72,7 @@ sequenceDiagram
 - Grant a GitLab token to the current project only.
 - Load an AWS credential for a single 2-hour session.
 - Render a temporary, git-ignored `.env` for a local environment.
-- Launch the agent with env vars already injected — without revealing the values.
+- Launch the agent with env vars already injected - without revealing the values.
 - Audit which secrets were used, when, and in what context.
 
 ## Example
@@ -94,8 +94,8 @@ Manager, Infisical and Doppler. See [`docs/providers.md`](docs/providers.md).
 
 Specs:
 
-- [`docs/mvp-spec.md`](docs/mvp-spec.md) — what is being built now.
-- [`docs/market-ready-spec.md`](docs/market-ready-spec.md) — long-term vision.
+- [`docs/mvp-spec.md`](docs/mvp-spec.md) - what is being built now.
+- [`docs/market-ready-spec.md`](docs/market-ready-spec.md) - long-term vision.
 
 ## Install (from source)
 
@@ -150,11 +150,11 @@ truth; the agent only ever receives an injected env var.
 flowchart TD
     Dev([Developer]) -->|"harpo run / exec / env"| CLI
 
-    subgraph HARPO["Harpo — local secret broker"]
+    subgraph HARPO["Harpo - local secret broker"]
         direction TB
         CLI["CLI Core<br/>parse · UX · validate"]
         POL["Policy Engine<br/>mode · TTL · project · authorization"]
-        SES["Session Manager<br/>time-bound grants — metadata only, never values"]
+        SES["Session Manager<br/>time-bound grants - metadata only, never values"]
         PROV["Provider Adapter<br/>bw · op · vault · keeper · ksm"]
         RUN["Runner<br/>strip BW_SESSION · inject only authorized env"]
         ENV["Env Renderer<br/>.harpo/.env.session · TTL · gitignored"]
@@ -190,7 +190,7 @@ flowchart TD
 | **Runner** | Primary delivery path: strips inherited `BW_SESSION`, injects only authorized vars, spawns the agent. |
 | **Env Renderer** | Opt-in `.env` materialization under gitignored `.harpo/`, with a TTL (balanced mode). |
 | **MCP Server** | Serves value-free tools to an agent over stdio, so the value never enters its environment. |
-| **Audit Logger** | Appends JSONL events (what / when / which) — **never the value**. |
+| **Audit Logger** | Appends JSONL events (what / when / which) - **never the value**. |
 | **Redactor** | Masks known secret formats in `harpo exec` output and Harpo's own errors. |
 
 ## Security model (summary)
@@ -216,7 +216,7 @@ protect against.
 
 ## Contributing
 
-Contributions are welcome — see [`CONTRIBUTING.md`](CONTRIBUTING.md) and our
+Contributions are welcome - see [`CONTRIBUTING.md`](CONTRIBUTING.md) and our
 [Code of Conduct](CODE_OF_CONDUCT.md). Harpo is a security tool, so please read
 the security invariants before changing anything that touches secrets.
 
