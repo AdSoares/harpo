@@ -214,6 +214,14 @@ protect against.
 - Feature specs: [Managed unlock](docs/specs/managed-unlock.md) · [Proxy / MCP mode](docs/specs/proxy-mcp-mode.md)
 - [Near-term roadmap](docs/roadmap.md)
 
+## The name
+
+**Harpo** is short for **Harpocrates**, the Greco-Egyptian god of silence and
+secrets, usually depicted with a finger to his lips. It fits the tool's job: a
+secret should stay quiet - never spoken into a prompt, a log, a transcript, or a
+committed file. Harpo hands a credential to the process that needs it and keeps
+its mouth shut about everything else.
+
 ## Contributing
 
 Contributions are welcome - see [`CONTRIBUTING.md`](CONTRIBUTING.md) and our
